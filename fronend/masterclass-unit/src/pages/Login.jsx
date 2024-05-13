@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
+// import './Login.css';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -12,6 +15,8 @@ function LoginPage() {
 
   return (
     <div>
+      <Header />
+      <section>
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <label>
@@ -24,6 +29,8 @@ function LoginPage() {
         </label>
         <button type="submit">Login</button>
       </form>
+      </section>
+      <Footer />
     </div>
   );
 }

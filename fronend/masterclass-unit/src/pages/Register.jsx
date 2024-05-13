@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -8,11 +10,11 @@ function RegisterPage() {
   const handleRegister = event => {
     event.preventDefault();
     console.log('Register :', username, email, password);
-    // Ajouter la logique du login ici 
   };
 
   return (
     <div>
+      <Header />
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
@@ -29,6 +31,7 @@ function RegisterPage() {
         </label>
         <button type="submit">Register</button>
       </form>
+      <Footer />
     </div>
   );
 }

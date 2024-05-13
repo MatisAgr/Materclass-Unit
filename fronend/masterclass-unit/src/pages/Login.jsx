@@ -11,18 +11,17 @@ function LoginPage() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <label>
+    <div className="formContainer">
+      <form onSubmit={handleLogin} className="form">
+        <label className="label">
           Username:
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} className="input" />
         </label>
-        <label>
+        <label className="label">
           Password:
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" />
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" className="loginButton">Login</button>
       </form>
     </div>
   );

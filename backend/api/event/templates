@@ -1,0 +1,176 @@
+<?php
+header('Content-type:application/json');
+
+require_once '../../../conf/config.php';
+require_once '../../../conf/SECRET_KEY.php';
+
+//Autoload class without namespace with spl_autoload_register function
+require_once '../../../lib/autoload.php';
+$classPath = '../../../';
+
+//Autoload class with namespace with composer
+require_once '../../../vendor/autoload.php';
+
+use Digipart\JWT;
+use Digipart\Language;
+use Digipart\Loyalty;
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $tokenPrefix = 'Bearer ';
+        if (substr($_SERVER['HTTP_AUTHORIZATION'], 0, strlen($tokenPrefix)) !== $tokenPrefix) {
+            header('Status: 400');
+            $jsonData = ['error' => 'Please provide a token to use this API'];
+            echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            die();
+        } else {
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+            $token = str_replace('Bearer ', '', $token);
+            $jwt = new JWT();
+            $authenticityToken = $jwt->checkTokenSignature($token, SECRET_KEY);
+            $isNotExpired = $jwt->isNotExpired($token);
+
+            if ($authenticityToken && $isNotExpired) {
+                $tokenPayload = $jwt->getTokenPayload($token);
+                $email = $tokenPayload['Email'];
+                $firstname = $tokenPayload['Firstname'];
+                $lastname = $tokenPayload['Lastname'];
+                $IdCustomer = $tokenPayload['Id'];
+
+                // LanguageIsoCode
+                try {
+                    $language = new Language();
+                    $languageIsoCode = $_GET['LanguageIsoCode'];
+                    $IdLang = $language->getLanguageByLanguageIsoCode($languageIsoCode)['IdLang'];
+                    $IdLang = ($IdLang == NULL) ? 1 : $IdLang;
+                    $languageIsoCode = $language->getLanguage($IdLang)['LanguageIsoCode'];
+                } catch (Exception $e) {
+                    $IdLang = 1;
+                }
+
+                $loyalty = new Loyalty();
+                $jsonData = [];
+                if (isset($_GET['IdLoyaltyProgram'], $_GET['IdLoyaltyProgramEvent'])) {
+                    $IdLoyaltyProgram = $_GET['IdLoyaltyProgram'];
+                    $IdLoyaltyProgramEvent = $_GET['IdLoyaltyProgramEvent'];
+                    $loyaltyProgramEvent = $loyalty->getLoyaltyProgramEventByIdLoyaltyProgramEventAndIdLang($IdLoyaltyProgramEvent, $IdLang);
+
+                    // LoyaltyProgramEventLanguageLinkMessage
+                    $loyaltyProgramEventDefaultName = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventDefaultName'] : "";
+                    $loyaltyProgramEventName = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventName'] : "";
+                    $loyaltyProgramEventCode = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventCode'] : "";
+                    $loyaltyProgramEventType = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventType'] : "";
+                    $loyaltyProgramEventLinkURL = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventLinkURL'] : "";
+                    $loyaltyProgramEventDescription = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventLanguageDescription'] : "";
+                    $loyaltyProgramEventDescriptionShort = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventLanguageDescriptionShort'] : "";
+                    $loyaltyProgramEventLinkMessage = ($loyaltyProgramEvent) ? $loyaltyProgramEvent['LoyaltyProgramEventLanguageLinkMessage'] : "";
+                    $loyaltyProgramEventActive = ($loyaltyProgramEvent && $loyaltyProgramEvent['LoyaltyProgramEventActive']) ? true : false;
+                    $src = "https://images.pexels.com/photos/1303081/pexels-photo-1303081.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+
+
+                    $loyaltyProgramRuleDatas = $loyalty->getLoyaltyProgramRuleByIdLoyaltyProgramEvent($IdLoyaltyProgramEvent);
+                    $loyaltyProgramEventData = $loyalty->getLoyaltyProgramEventByIdLoyaltyProgramEventAndIdLang($IdLoyaltyProgramEvent, $IdLang);
+                    $loyaltyProgramEventLimit = $loyaltyProgramEventData['LoyaltyProgramEventLimit'];
+                    $loyaltyProgramCustomerEventLimit = $loyalty->getLoyaltyCustomerHistoryLimitEvent($IdCustomer, $IdLoyaltyProgramEvent);
+                    $loyaltyProgramEventLimitNumber = $loyaltyProgramEventData['LoyaltyProgramEventLimitNumber'];
+
+                    // echo  "Le nombre d'utilisation par user est de $loyaltyProgramEventLimitNumber";
+                    // echo "L'utilisateur a utilise célà $loyaltyProgramCustomerEventLimit fois";
+                    // die();
+
+
+                    if ($loyaltyProgramEventLimitNumber > $loyaltyProgramCustomerEventLimit) {
+                        $loyaltyEventCustomerCanUse = true;
+                    } else {
+                        $loyaltyEventCustomerCanUse = false;
+                    }
+
+                    $customerHistory = $loyalty->getLoyaltyProgramCustomerHistoryById($IdCustomer);
+                    foreach ($customerHistory as $history) {
+                    }
+
+
+                    $jsonData = [
+                        'IdLoyaltyProgram' => $IdLoyaltyProgram,
+                        'LoyaltyProgramCustomer' => true,
+                        'LoyaltyProgramCustomerTotalPoints' => $loyaltyProgramCustomerTotalPoints,
+                        'LoyaltyProgramEventType' => ['membership', 'order', 'birthday', 'social', 'identification']
+                    ];
+
+                    switch ($loyaltyProgramEventType) {
+                        case 0:
+                            $code = 0;
+                            $loyaltyProgramEventType = 'membership';
+                            break;
+                        case 1:
+                            $code = 1;
+                            $loyaltyProgramEventType = 'order';
+                            break;
+                        case 2:
+                            $code = 2;
+                            $loyaltyProgramEventType = 'birthday';
+                            break;
+                        case 3:
+                            $code = 3;
+                            $loyaltyProgramEventType = 'social';
+                            break;
+                        case 4:
+                            $code = 4;
+                            $loyaltyProgramEventType = 'identification';
+                            break;
+                    }
+
+                    $jsonData['LoyaltyEvent'] = [
+                        'IdLoyaltyProgramEvent' => $IdLoyaltyProgramEvent,
+                        'Src' => $src,
+                        'LoyaltyProgramEventName' => $loyaltyProgramEventName,
+                        'LoyaltyProgramEventLinkMessage' => $loyaltyProgramEventLinkMessage,
+                        'LoyaltyProgramEventDescriptionShort' => $loyaltyProgramEventDescriptionShort,
+                        'LoyaltyProgramEventDescription' => $loyaltyProgramEventDescription,
+                        'LoyaltyPointsToEarn' => ($loyaltyProgramEventType != 'order') ? $loyaltyProgramRuleAssignExtraValuePoint : $rules,
+                        "LoyaltyEventMaxUsage" => $loyaltyProgramEventLimitNumber,
+                        'LoyaltyProgramEventActive' => $loyaltyProgramEventActive,
+                        'LoyaltyEventCustomerCanUse' => $loyaltyEventCustomerCanUse,
+                        'LoyaltyProgramEventType' => [
+                            'Label' => $loyaltyProgramEventType,
+                            'Code' => $code
+                        ],
+                    ];
+
+                    $loyaltyProgramRuleFrom = ($loyaltyProgramRuleDatas) ? $loyaltyProgramRuleDatas['LoyaltyProgramRuleFrom'] : "";
+                    $loyaltyProgramRuleTo = ($loyaltyProgramRuleDatas) ? $loyaltyProgramRuleDatas['LoyaltyProgramRuleTo'] : "";
+                    $loyaltyProgramRuleForeach = ($loyaltyProgramRuleDatas) ? $loyaltyProgramRuleDatas['LoyaltyProgramRuleForeach'] : "";
+                    $loyaltyProgramRuleAssignValuePoint = ($loyaltyProgramRuleDatas) ? $loyaltyProgramRuleDatas['LoyaltyProgramRuleAssignValuePoint'] : "";
+                    $loyaltyProgramRuleAssignExtraValuePoint = ($loyaltyProgramRuleDatas) ? $loyaltyProgramRuleDatas['LoyaltyProgramRuleAssignExtraValuePoint'] : "";
+
+                    $jsonData['LoyaltyEvent']['LoyaltyEventRules'][] = [
+                        'LoyaltyProgramRuleFrom' => $loyaltyProgramRuleFrom,
+                        'LoyaltyProgramRuleTo' => $loyaltyProgramRuleTo,
+                        'LoyaltyProgramRuleForeach' => $loyaltyProgramRuleForeach,
+                        'LoyaltyProgramRuleAssignValuePoint' => $loyaltyProgramRuleAssignValuePoint,
+                        'LoyaltyProgramRuleAssignExtraValuePoint' => $loyaltyProgramRuleAssignExtraValuePoint,
+                    ];
+
+                    echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                } else {
+                    header('Status: 400');
+                    $jsonData = ['error' => 'One or some arguments are missing'];
+                    echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                    die();
+                }
+            } else {
+                header('Status: 400');
+                header('Content-type:application/json');
+                $jsonData = ['error' => 'token is expired or invalid'];
+                echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                exit();
+            }
+        }
+    }
+} else {
+    header('Status: 400');
+    $jsonData = ['error' => 'One or some arguments are missing'];
+    echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    die();
+}

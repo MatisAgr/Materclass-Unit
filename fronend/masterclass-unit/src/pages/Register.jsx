@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+
 import './Register.css';
 
 function RegisterPage() {
@@ -31,10 +32,13 @@ function RegisterPage() {
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" />
         </label>
         <button type="submit" className="registerButton">Register</button>
+
       </form>
       <Footer />
     </div>
   );
 }
 
+
 export default RegisterPage;
+

@@ -14,6 +14,7 @@ function LoginPage() {
   };
 
   return (
+
     <div className="formContainer">
       <Header />
       <section>
@@ -35,4 +36,6 @@ function LoginPage() {
   );
 }
 
+
 export default LoginPage;
+

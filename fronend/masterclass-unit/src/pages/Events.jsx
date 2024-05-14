@@ -20,7 +20,7 @@ const EventList = () => {
     <Header/>
     <div className="event-list">
       <h2>Upcoming Events</h2>
-      <ul>
+      <ul className='eventlist'>
         {events.map(event => (
           <li key={event.id} className='event-card'>
             <h3>{event.name}</h3>

@@ -5,45 +5,8 @@ import { useState, useEffect } from 'react';
 import './Dashboard.css';
 
 export default function Dashboard() {
-    const eventsData = [
-        {
-            IdEvent: 1,
-            EventDescription: 'Concert',
-            EventSlots: 100,
-            EventAgeneed: '18',
-            EventCategoryId: 1,
-            EventStart: '2024-05-20T10:00:00Z',
-            EventEnd: '2024-05-20T12:00:00Z'
-        },
-        {
-            IdEvent: 2,
-            EventDescription: 'Coupe du monde',
-            EventSlots: 50,
-            EventAgeneed: '18',
-            EventCategoryId: 2,
-            EventStart: '2024-06-15T14:00:00Z',
-            EventEnd: '2024-06-15T16:00:00Z'
-        },
-        {
-            IdEvent: 3,
-            EventDescription: 'MSI',
-            EventSlots: 300,
-            EventAgeneed: 'Enfants',
-            EventCategoryId: 3,
-            EventStart: '2024-07-10T09:00:00Z',
-            EventEnd: '2024-07-10T11:00:00Z'
-        },
-        {
-            IdEvent: 4,
-            EventDescription: 'Five',
-            EventSlots: 200,
-            EventAgeneed: 'Enfants',
-            EventCategoryId: 3,
-            EventStart: '2024-07-10T09:00:00Z',
-            EventEnd: '2024-07-10T11:00:00Z'
-        }
-    ];
     const [events, setEvents] = useState([]);
+    const [dataList, setDataList] = useState([]);
     const [newEvent, setNewEvent] = useState({
         EventDescription: '',
         EventSlots: '',
@@ -61,9 +24,10 @@ export default function Dashboard() {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch('/api/events');
-            const data = await response.json();
-            setEvents(data);
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/list');
+            const dataList = await response.json();
+            setDataList(dataList.Events);
+            console.log(dataList.Events);
         } catch (error) {
             console.error('Erreur lors de la récupération des événements:', error);
         }
@@ -71,7 +35,7 @@ export default function Dashboard() {
 
     const handleAddEvent = async () => {
         try {
-            const response = await fetch('/api/events', {
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -119,10 +83,11 @@ export default function Dashboard() {
         <div>
             <Header />
             <div className="dashboard">
-                <h2>Dashboard</h2>
+                <h2 data-testid="dashboardID">Dashboard</h2>
                 <div className='event-card'>
                     <h3>Ajouter un événement</h3>
                     <input
+                        data-testid="eventDescription"
                         type="text"
                         placeholder="Description de l'événement"
                         value={newEvent.EventDescription}
@@ -135,12 +100,14 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
                     />
                     <input
+                        data-testid="eventAge"
                         type="text"
                         placeholder="Age requis"
                         value={newEvent.EventAgeneed}
                         onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
                     />
                     <input
+                        data-testid="eventCategory"
                         type="number"
                         placeholder="Catégorie ID"
                         value={newEvent.EventCategoryId}
@@ -162,7 +129,7 @@ export default function Dashboard() {
                 </div>
                 <section className="cards">
                 {cancelledEvent && (
-                    <div>
+                    <div className='cancelledEvent'>
                         <h3>Annuler l'événement "{cancelledEvent.EventDescription}"</h3>
                         <textarea
                             placeholder="Raison de l'annulation"
@@ -173,9 +140,9 @@ export default function Dashboard() {
                         <button onClick={() => setCancelledEvent(null)}>Annuler</button>
                     </div>
                 )}
-                <h3>Événements</h3>
+                <h3 data-testid="events">Événements</h3>
                 <div className="card-container">
-                    {eventsData.map((event) => (
+                    {dataList.map((event) => (
                         <ul key={event.IdEvent} className="card">
                             <li>{event.EventDescription}</li>
                             <li>Places disponibles : {event.EventSlots}</li>

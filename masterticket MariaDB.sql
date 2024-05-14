@@ -49,7 +49,7 @@ CREATE TABLE `categories` (
 -- Déchargement des données de la table `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `categories_name`) VALUES
+INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 (1, 'Test');
 
 -- --------------------------------------------------------

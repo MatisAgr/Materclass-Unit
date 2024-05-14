@@ -7,7 +7,7 @@ ul{
     flex-direction: column;
     align-items: center;
 }
-ul{
+.eventlist{
     display: flex;
     gap: 1rem;
 }

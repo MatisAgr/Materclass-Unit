@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css'
 
 function LoginPage() {
@@ -17,7 +18,6 @@ function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const errorMessage = document.getElementById('error-message');
     if (username === '' && password === '' || username === '' || password === '') {
       setErrorMessage('Enter valid credentials to login.');
     } else {
@@ -40,7 +40,7 @@ function LoginPage() {
             Password:
             <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
           </label>
-          <button data-testid="submit-login-button" className="loginButton" type="submit">Login</button>
+          <button data-testid="submit-login-button" className="loginButton" type="submit" disabled={disabled}>Login</button>
           <p data-testid="error-message">{errorMessage}</p>
           <Link data-testid="register-link" to="/register">Register</Link>
         </form>

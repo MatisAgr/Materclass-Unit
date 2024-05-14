@@ -40,3 +40,8 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .loginButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }

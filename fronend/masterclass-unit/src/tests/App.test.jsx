@@ -17,5 +17,4 @@ test('renders register page on /register route', () => {
   window.history.pushState({}, 'Register page', '/register');
   render(<App />);
   expect(screen.getByTestId('sumbit-register-button')).toBeInTheDocument();
-eInTheDocument();
 });

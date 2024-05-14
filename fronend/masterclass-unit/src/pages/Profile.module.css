@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.title {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.profileContainer {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #555;
+}
+
+.input,
+.button {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: calc(100% - 22px); 
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.button {
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  color: #333;
+  margin-right: 10px;
+}
+
+.cancelButton:hover {
+  background-color: #aaa;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f8f8f8;
+}

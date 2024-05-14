@@ -17,16 +17,17 @@ SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-RewriteRule ^documentation$ documentation.php
+# RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
+# RewriteRule ^products products.php
 
+RewriteRule ^event/list$ event/list.php
+RewriteRule ^event/event$ event/event.php
+RewriteRule ^event/create$ event/create.php
+RewriteRule ^event/update$ event/update.php
 
-##APIs produits
-RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
-RewriteRule ^products products.php
+RewriteRule ^category/list$ category/list.php
+RewriteRule ^category/category$ category/category.php
+RewriteRule ^category/create$ category/create.php
+RewriteRule ^category/update$ category/update.php
 
-
-# Auth
-    RewriteRule ^event/list$ event/list.php
-    RewriteRule ^event/create$ event/create.php
-# Auth
 

@@ -14,7 +14,9 @@ class Events {
 
     public function createEvent($event_desc, $event_start, $event_end, $event_slots, $event_ageneed, $event_category_id){
         $sql = "INSERT INTO `events`(`event_desc`, `event_start`, `event_end`, `event_slots`, `event_ageneed`, `event_category_id`) 
+
         VALUES (:col1, :col2, :col3, :col4, :col5, :col6)";
+
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_desc, PDO::PARAM_STR);
         $query->bindValue(':col2', $event_start, PDO::PARAM_STR);
@@ -35,6 +37,7 @@ class Events {
 
     public function getAllEvents(){
         $sql = "SELECT * FROM `events`";
+
         $query = $this->db->prepare($sql);
         $query->execute();
         return $result = $query->fetchAll();
@@ -64,4 +67,5 @@ class Events {
         $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
         $query->execute();
     }
+
 }

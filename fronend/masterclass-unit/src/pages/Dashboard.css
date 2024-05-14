@@ -1,0 +1,81 @@
+.dashboard {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* AddEvent */
+.event-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #000000;
+    font-size: 24px;
+}
+
+.event-card input{
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.event-card button {
+    background-color: #d42df2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Cards */
+.cards {
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.cards .card-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cards ul {
+    list-style-type: none;
+    padding: 25px;
+    border: 3px solid;
+    width: 100%;
+}
+
+.cards li {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.cards button {
+    margin-top: 14px;
+    background-color: #d42df2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.cards button:hover {
+    background-color: #38013d;
+}

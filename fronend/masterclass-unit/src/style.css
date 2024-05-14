@@ -40,3 +40,14 @@
     border-radius: 5px;
     cursor: pointer;
   }
+  
+  /* Bouton pour la page d'inscription */
+  .registerButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }

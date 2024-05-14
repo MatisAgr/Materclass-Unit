@@ -30,11 +30,11 @@
     box-sizing: border-box;
   }
   
-  /* Bouton pour la page de login */
-  .loginButton {
+  /* Bouton pour la page d'inscription */
+  .registerButton {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;

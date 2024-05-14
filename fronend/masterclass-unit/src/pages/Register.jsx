@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+import './Register.css';
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -13,23 +14,23 @@ function RegisterPage() {
   };
 
   return (
-    <div>
+    <div className="formContainer">
       <Header />
       <h1>Register</h1>
-      <form onSubmit={handleRegister}>
-        <label>
+      <form onSubmit={handleRegister} className="form">
+        <label className="label">
           Username:
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} className="input" />
         </label>
-        <label>
+        <label className="label">
           Email:
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="input" />
         </label>
-        <label>
+        <label className="label">
           Password:
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" />
         </label>
-        <button type="submit">Register</button>
+        <button type="submit" className="registerButton">Register</button>
       </form>
       <Footer />
     </div>

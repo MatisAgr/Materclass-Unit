@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import './Register.css';
+
 function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -8,24 +10,23 @@ function RegisterPage() {
   const handleRegister = event => {
     event.preventDefault();
     console.log('Register :', username, email, password);
-    // Ajouter la logique du login ici 
   };
 
   return (
-    <div>
+    <div className="formContainer">
       <h1>Register</h1>
-      <form onSubmit={handleRegister}>
-        <label>
+      <form onSubmit={handleRegister} className="form">
+        <label className="label">
           Username:
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} className="input" />
         </label>
-        <label>
+        <label className="label">
           Email:
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="input" />
         </label>
-        <label>
+        <label className="label">
           Password:
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" />
         </label>
         <button data-testid="sumbit-register-button" type="submit">Register</button>
       </form>
@@ -33,4 +34,6 @@ function RegisterPage() {
   );
 }
 
+
 export default RegisterPage;
+

@@ -8,11 +8,12 @@ import RegisterPage from './pages/Register';
 function App() {
   return (
     <Router>
-      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/events" element={<Events />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

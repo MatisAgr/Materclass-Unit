@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import './Login.css'
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -29,22 +29,26 @@ function LoginPage() {
 
   return (
     <div>
-      <h1>Login</h1>
-      <form data-testid="login-form" onSubmit={handleLogin}>
-        <label>
-          Username:
-          <input data-testid="username-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label>
-          Password:
-          <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <button data-testid="submit-login-button" type="submit" disabled={disabled}>Login</button>
-        <p data-testid="error-message">{errorMessage}</p>
-        <Link data-testid="register-link" to="/register">Register</Link>
-      </form>
+      <section>
+        <h1>Login</h1>
+        <form id="loginForm" data-testid="login-form" onSubmit={handleLogin}>
+          <label>
+            Username:
+            <input data-testid="username-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
+          </label>
+          <label>
+            Password:
+            <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          </label>
+          <button data-testid="submit-login-button" className="loginButton" type="submit">Login</button>
+          <p data-testid="error-message">{errorMessage}</p>
+          <Link data-testid="register-link" to="/register">Register</Link>
+        </form>
+      </section>
     </div>
   );
 }
 
+
 export default LoginPage;
+

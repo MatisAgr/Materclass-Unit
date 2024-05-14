@@ -1,6 +1,7 @@
 <?php
 namespace Masterticket;
 
+require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 
 use PDO;
@@ -30,7 +31,7 @@ class Database
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
-        $this->pdo = new \PDO('mysql:host=' . $this->dbHost . ';dbname=' . $this->dbName . '', $this->dbUser, $this->dbPass, $PDOoptions);
+      $this->pdo = new \PDO('mysql:host=' . $this->dbHost . ';dbname=' . $this->dbName . '', $this->dbUser, $this->dbPass, $PDOoptions);
 
         return $this->pdo;
     }

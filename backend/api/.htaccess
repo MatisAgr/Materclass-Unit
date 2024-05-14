@@ -1,0 +1,31 @@
+# protect .htaccess
+<Files ~ "^.\*\.([Hh][Tt][Aa])">
+Order allow,deny
+Deny from all
+Satisfy all
+</Files>
+
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+Header add Access-Control-Allow-Headers: "Authorization"
+
+RewriteEngine On
+
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
+# RewriteRule ^products products.php
+
+RewriteRule ^event/list$ event/list.php
+RewriteRule ^event/event$ event/event.php
+RewriteRule ^event/create$ event/create.php
+RewriteRule ^event/update$ event/update.php
+
+RewriteRule ^category/list$ category/list.php
+RewriteRule ^category/category$ category/category.php
+RewriteRule ^category/create$ category/create.php
+RewriteRule ^category/update$ category/update.php

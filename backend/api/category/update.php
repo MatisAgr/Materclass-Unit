@@ -1,27 +1,25 @@
 <?php
-
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
 
-
 use Masterticket\Category;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    if(isset($_POST['CategoryName'])){
+    if(isset($_POST['CategoryName'], $_POST['IdCategory'])){
         $jsonData = [];
         $categoryName = $_POST['CategoryName'];
+        $idCategory = $_POST['IdCategory'];
         $category = new Category();
 
-        $category->createCategory($categoryName);
-        
+        $category->updateCategory($idCategory, $categoryName);
+    
         $jsonData = [
             'code' => 200,
             'status' => 'success',
+            'IdCategory' => intval($idCategory),
             'CategoryName' => $categoryName
-        ];
-
+        ];   
     }else {
         http_response_code(405);
         $jsonData = [
@@ -30,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'message' => 'One or some arguments are missing.'
         ];
     }
+    
 }else {
     http_response_code(405);
     $jsonData = [

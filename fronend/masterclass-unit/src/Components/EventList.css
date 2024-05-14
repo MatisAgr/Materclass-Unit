@@ -1,0 +1,33 @@
+ul{
+    list-style-type: none;
+}
+
+.event-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ul{
+    display: flex;
+    gap: 1rem;
+}
+.event-card{
+    background-color: rgb(207, 215, 221);
+    padding: 1rem;
+    max-width: 25rem;
+    border-radius: .5rem;
+}
+
+.event-card > button {
+    width: 7rem;
+    height: 2rem;
+    border-radius: .5rem;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(177, 212, 241);
+    transition: .5s;
+}
+
+.event-card > button:hover{
+    background-color: rgb(114, 194, 255);
+}

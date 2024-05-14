@@ -30,8 +30,6 @@ class Events {
         $sql = "SELECT * FROM `events` WHERE `event_id` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_id, PDO::PARAM_STR);
-        var_dump($query);
-        die();
         return $result = $query->fetch();
     }
 

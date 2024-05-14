@@ -27,6 +27,7 @@ class Events {
         $query->execute();
     }
 
+
     public function getEventByDescription($event_description){
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);
@@ -37,7 +38,6 @@ class Events {
 
     public function getAllEvents(){
         $sql = "SELECT * FROM `events`";
-
         $query = $this->db->prepare($sql);
         $query->execute();
         return $result = $query->fetchAll();

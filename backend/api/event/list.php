@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if($eventDatas){
         foreach($eventDatas as $eventData){
             $idEvent = $eventData['event_id'];
-            $eventDescription = $eventData['event_description'];
+            $eventDescription = $eventData['event_desc'];
             $eventSlots = $eventData['event_slots'];
             $eventAgeneed = $eventData['event_ageneed'];
             $eventCategoryId = $eventData['event_category_id'];

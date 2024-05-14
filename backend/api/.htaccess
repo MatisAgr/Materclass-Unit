@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<?php
-api/event/create
-=======
 # protect .htaccess
 <Files ~ "^.\*\.([Hh][Tt][Aa])">
 Order allow,deny
@@ -33,6 +29,3 @@ RewriteRule ^category/list$ category/list.php
 RewriteRule ^category/category$ category/category.php
 RewriteRule ^category/create$ category/create.php
 RewriteRule ^category/update$ category/update.php
-
-
->>>>>>> 4585f9b48b66eb0d2bc9b600954a29742a5c31d1

@@ -1,11 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Header from './Components/Header';
+import NavBar from './components/NavBar';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
-import Events from './pages/Events';
-import Dashboard from './pages/Dashboard';
 
 function App() {
   return (

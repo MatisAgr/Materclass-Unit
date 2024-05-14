@@ -1,37 +1,50 @@
 import React, { useState } from 'react';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import './Login.css'
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = event => {
-    event.preventDefault();
-    console.log('Login :', username, password);
-    // Ajouter la logique du login ici 
+  useEffect(() => {
+    if (username === '' && password === '' || username === '' || password === '') {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const errorMessage = document.getElementById('error-message');
+    if (username === '' && password === '' || username === '' || password === '') {
+      setErrorMessage('Enter valid credentials to login.');
+    } else {
+      setErrorMessage('');
+    }
   };
 
-  return (
 
-    <div className="formContainer">
-      <Header />
+
+  return (
+    <div>
       <section>
         <h1>Login</h1>
-        <form onSubmit={handleLogin} className="form">
-          <label className="label">
+        <form id="loginForm" data-testid="login-form" onSubmit={handleLogin}>
+          <label>
             Username:
-            <input type="text" value={username} onChange={e => setUsername(e.target.value)} className="input" />
+            <input data-testid="username-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
           </label>
-          <label className="label">
+          <label>
             Password:
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" />
+            <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
           </label>
-          <button type="submit" className="loginButton">Login</button>
+          <button data-testid="submit-login-button" className="loginButton" type="submit">Login</button>
+          <p data-testid="error-message">{errorMessage}</p>
+          <Link data-testid="register-link" to="/register">Register</Link>
         </form>
       </section>
-      <Footer />
     </div>
   );
 }

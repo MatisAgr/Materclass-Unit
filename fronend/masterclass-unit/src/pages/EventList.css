@@ -12,7 +12,7 @@ ul{
     gap: 1rem;
 }
 .event-card{
-    background-color: rgb(207, 215, 221);
+    background-color: rgb(215, 172, 255);
     padding: 1rem;
     max-width: 25rem;
     border-radius: .5rem;
@@ -24,10 +24,10 @@ ul{
     border-radius: .5rem;
     border: none;
     cursor: pointer;
-    background-color: rgb(177, 212, 241);
+    background-color: rgb(183, 105, 247);
     transition: .5s;
 }
 
 .event-card > button:hover{
-    background-color: rgb(114, 194, 255);
+    background-color: rgb(130, 50, 221);
 }

@@ -10,12 +10,15 @@ use Masterticket\Events;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if(isset($_GET['IdEvent'])){
+        $jsonData = [];
         $idEvent = $_GET['IdEvent'];
 
         $events = new Events();
 
         $eventData = $events->getEventById($idEvent);
 
+        var_dump($eventData);
+        die();
         if($eventData){
 
             var_dump($eventData);

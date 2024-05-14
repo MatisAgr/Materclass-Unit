@@ -1,7 +1,6 @@
 <?php
 namespace Masterticket;
 
-require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 
 use PDO;

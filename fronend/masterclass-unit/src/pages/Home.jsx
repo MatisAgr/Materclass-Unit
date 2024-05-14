@@ -6,7 +6,7 @@ function Home() {
   return (
     <div>
       <Header />
-      <h1>Home</h1>
+      <h1 data-testid="homeID">Home</h1>
       <Footer />
     </div>
 

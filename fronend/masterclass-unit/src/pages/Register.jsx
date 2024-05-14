@@ -27,7 +27,7 @@ function RegisterPage() {
           Password:
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
         </label>
-        <button type="submit">Register</button>
+        <button data-testid="sumbit-register-button" type="submit">Register</button>
       </form>
     </div>
   );

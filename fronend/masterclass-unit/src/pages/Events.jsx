@@ -22,21 +22,35 @@ const EventList = () => {
             setConfirmAge(false);
         }
     }
-
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const submissionData = {
-            eventId: selectedEvent.IdEvent,
-            numAttendees: numAttendees,
-            allOfAge: confirmAge,
-            dateTime: new Date().toISOString()
-        };
-        console.log(submissionData);
-        // Reset form and close modal
-        setNumAttendees(1);
-        setConfirmAge(false);
-        toggleTicketModal(null);
-    }
+      e.preventDefault();
+      if (!selectedEvent) return; // Ensure selectedEvent is not null
+      const formData = new FormData();
+      formData.append('idEvent', selectedEvent.IdEvent);
+      formData.append('idUser', 1); // Assuming user ID is 1, update accordingly
+      
+      fetch('http://localhost/Materclass-Unit/backend/api/invoice/create', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log('Invoice created:', data);
+          // Reset form and close modal
+          setNumAttendees(1);
+          setConfirmAge(false);
+          toggleTicketModal(null);
+      })
+      .catch(error => {
+          console.error('Error creating invoice:', error);
+          // Handle error here, maybe display an error message to the user
+      });
+  }
 
     useEffect(() => {
         fetch('http://localhost/Materclass-Unit/backend/api/event/list')

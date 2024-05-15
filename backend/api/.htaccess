@@ -6,7 +6,7 @@
 </Files>
 
 # Allow cross-origin requests
-Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Origin "http://localhost:3000"
 Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
 Header always set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 Header always set Access-Control-Allow-Credentials "true"

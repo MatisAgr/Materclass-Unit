@@ -1,4 +1,5 @@
 <?php
+// get all events
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
@@ -7,15 +8,16 @@ use Masterticket\Events;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $jsonData = [
-        'code' => 200,
-        'status' => 'success'
-    ];
-
     $events = new Events();
     $eventDatas = $events->getAllEvents();
 
     if($eventDatas){
+        $jsonData = [
+            'code' => 200,
+            'status' => 'success',
+            'TotalEvents' => count($eventDatas)
+        ];
+
         foreach($eventDatas as $eventData){
             $idEvent = $eventData['event_id'];
             $eventDescription = $eventData['event_desc'];

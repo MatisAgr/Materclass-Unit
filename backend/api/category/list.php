@@ -7,15 +7,16 @@ use Masterticket\Category;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $jsonData = [
-        'code' => 200,
-        'status' => 'success'
-    ];
-
     $category = new Category();
     $categoryDatas = $category->getAllCategory();
 
     if($categoryDatas){
+        $jsonData = [
+            'code' => 200,
+            'status' => 'success',
+            'TotalCategories' => count($categoryDatas)
+        ];
+
         foreach($categoryDatas as $categoryData){
             $idCategory = $categoryData['category_id'];
             $categoryName = $categoryData['category_name'];

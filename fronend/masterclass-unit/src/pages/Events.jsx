@@ -9,6 +9,7 @@ const EventList = () => {
     const [numAttendees, setNumAttendees] = useState(1);
     const [confirmAge, setConfirmAge] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [categories, setCategories] = useState([]);
 
     const toggleTicketModal = (event) => {
         setSelectedEvent(event);
@@ -44,23 +45,38 @@ const EventList = () => {
             .catch(error => console.error('Error fetching events:', error));
     }, []);
 
+    useEffect(() => {
+      fetch('http://localhost/Materclass-Unit/backend/api/category/list')
+          .then(response => response.json())
+          .then(data => setCategories(data.Categories))
+          .catch(error => console.error('Error fetching events:', error));
+  }, []);
+    
+
     return (
         <>
             <Header />
             <div className="event-list">
                 <h2 data-testid="event-page-title">Upcoming Events</h2>
                 <ul>
-                    {events.map(event => (
-                        <li key={event.IdEvent} className='event-card'>
-                            <h3 data-testid="event-desc">{event.EventDescription}</h3>
-                            <p data-testid="event-start-date">Start Date : {event.EventStart}</p>
-                            <p data-testid="event-end-date">End Date : {event.EventEnd}</p>
-                            <p data-testid="event-slots">Slots : {event.EventSlots}</p>
-                            <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
-                            <p data-testid="event-cat">Category ID : {event.category}</p>
-                            <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
-                        </li>
-                    ))}
+                  {events.map(event => {
+                        // Find the category object corresponding to the event's category ID
+                        const category = categories.find(cat => cat.IdCategory === event.category);
+                        
+                        return (
+                            <li key={event.IdEvent} className='event-card'>
+                                <h3 data-testid="event-desc">{event.EventDescription}</h3>
+                                <p data-testid="event-start-date">Start Date : {event.EventStart}</p>
+                                <p data-testid="event-end-date">End Date : {event.EventEnd}</p>
+                                <p data-testid="event-slots">Slots : {event.EventSlots}</p>
+                                <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
+                                {/* Display the category name if category is found */}
+                                <p data-testid="event-cat">Category : {category.CategoryName}</p>
+                                <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
+                            </li>
+                        );
+                    })}
+
                 </ul>
             </div>
             {ticketModal && (

@@ -9,11 +9,12 @@ export default function Dashboard() {
     const [errorMessageAdd, setErrorMessageAdd] = useState('');
     const [events, setEvents] = useState([]);
     const [dataList, setDataList] = useState([]);
+    const [dataCate, setDataCate] = useState([]);
     const [newEvent, setNewEvent] = useState({
         EventDescription: '',
         EventSlots: '',
         EventAgeneed: '',
-        EventCategoryId: '',
+        CategoryId: '',
         EventStart: '',
         EventEnd: '',
         errorMessageAdd: ''
@@ -23,6 +24,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchEvents();
+        fetchCategories();
     }, []);
 
     const fetchEvents = async () => {
@@ -30,14 +32,27 @@ export default function Dashboard() {
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/list');
             const dataList = await response.json();
             setDataList(dataList.Events);
-            // console.log(dataList.Events);
+            console.log(dataList.Events);
         } catch (error) {
             console.error('Erreur lors de la récupération des événements:', error);
         }
     };
 
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/category/list');
+            const dataCate = await response.json();
+            setDataCate(dataCate.Categories);
+            // console.log(dataCate.Categories)
+        } catch (error) {
+            console.error('Erreur lors de la récupération des catégories:', error);
+        }
+    };
+
+
     const handleAddEvent = async () => {
         try {
+            console.log(newEvent)
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
                 headers: {
@@ -51,7 +66,7 @@ export default function Dashboard() {
                 EventDescription: '',
                 EventSlots: '',
                 EventAgeneed: '',
-                EventCategoryId: '',
+                CategoryId: '',
                 EventStart: '',
                 EventEnd: ''
             });
@@ -116,13 +131,6 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
                     />
                     <input
-                        data-testid="eventCategory"
-                        type="number"
-                        placeholder="Catégorie ID"
-                        value={newEvent.EventCategoryId}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventCategoryId: e.target.value })}
-                    />
-                    <input
                         type="datetime-local"
                         placeholder="Début de l'événement"
                         value={newEvent.EventStart}
@@ -134,6 +142,20 @@ export default function Dashboard() {
                         value={newEvent.EventEnd}
                         onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
                     />
+                    <select
+                        data-testid="eventCategory"
+                        value={newEvent.CategoryId}
+                        onChange={(e) => setNewEvent({ ...newEvent, CategoryId: e.target.value })}
+                        >
+                        <option value="" disabled>
+                            Choisissez une catégorie
+                        </option>
+                        {dataCate.map((category) => (
+                            <option key={category.IdEvent} value={category.IdEvent}>
+                            {category.CategoryName}
+                            </option>
+                        ))}
+                        </select>
                     <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
                     <p data-testid="error-Message-Add">{errorMessageAdd}</p>
                 </div>
@@ -159,7 +181,7 @@ export default function Dashboard() {
                                 <p>{event.EventDescription}</p>
                                 <p>Places disponibles : {event.EventSlots}</p>
                                 <p>Âge requis : {event.EventAgeneed}</p>
-                                <p>Catégorie ID : {event.EventCategoryId}</p>
+                                <p>Catégorie : {event.EventCategoryId}</p>
                                 <p>Début : {new Date(event.EventStart).toLocaleString()}</p>
                                 <p>Fin : {new Date(event.EventEnd).toLocaleString()}</p>
                                 <button onClick={() => handleCancelEvent(event)}>

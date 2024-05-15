@@ -37,10 +37,10 @@ class Events {
         return $result = $query->fetch();
     }
 
-    public function getEventById($event_id){
-        $sql = "SELECT * FROM `events` WHERE `event_id` = $event_id";
+    public function getEventById($eventId) {
+        $sql = "SELECT * FROM `events` WHERE `event_id` = :col1";
         $query = $this->db->prepare($sql);
-
+        $query->bindValue(':col1', $eventId, PDO::PARAM_INT);
         $query->execute();
         return $result = $query->fetch();
     }

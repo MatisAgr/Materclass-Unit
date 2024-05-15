@@ -1,9 +1,10 @@
 <?php
-// for reservate a event
+// create reservation
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
 
+use Masterticket\Invoices;
 use Masterticket\Events;
 use Masterticket\Category;
 
@@ -18,6 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $eventData = $events->getEventById($idEvent);
 
         if($eventData){
+            $invoices = new Invoices();
+            $invoiceDate = (new Datetime())->format('Y-m-d h:i:s');
+            $invoices->createInvoice($idUser, $idEvent, $invoiceDate);
+
+            $jsonData = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Invoice made with success'
+            ];
         
         }else {
             http_response_code(401);

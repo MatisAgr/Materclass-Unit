@@ -5,73 +5,55 @@ import { useState, useEffect } from 'react';
 import './Dashboard.css';
 
 export default function Dashboard() {
-    const eventsData = [
-        {
-            IdEvent: 1,
-            EventDescription: 'Concert',
-            EventSlots: 100,
-            EventAgeneed: '18',
-            EventCategoryId: 1,
-            EventStart: '2024-05-20T10:00:00Z',
-            EventEnd: '2024-05-20T12:00:00Z'
-        },
-        {
-            IdEvent: 2,
-            EventDescription: 'Coupe du monde',
-            EventSlots: 50,
-            EventAgeneed: '18',
-            EventCategoryId: 2,
-            EventStart: '2024-06-15T14:00:00Z',
-            EventEnd: '2024-06-15T16:00:00Z'
-        },
-        {
-            IdEvent: 3,
-            EventDescription: 'MSI',
-            EventSlots: 300,
-            EventAgeneed: 'Enfants',
-            EventCategoryId: 3,
-            EventStart: '2024-07-10T09:00:00Z',
-            EventEnd: '2024-07-10T11:00:00Z'
-        },
-        {
-            IdEvent: 4,
-            EventDescription: 'Five',
-            EventSlots: 200,
-            EventAgeneed: 'Enfants',
-            EventCategoryId: 3,
-            EventStart: '2024-07-10T09:00:00Z',
-            EventEnd: '2024-07-10T11:00:00Z'
-        }
-    ];
+    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessageAdd, setErrorMessageAdd] = useState('');
     const [events, setEvents] = useState([]);
+    const [dataList, setDataList] = useState([]);
+    const [dataCate, setDataCate] = useState([]);
     const [newEvent, setNewEvent] = useState({
         EventDescription: '',
         EventSlots: '',
         EventAgeneed: '',
-        EventCategoryId: '',
+        CategoryId: '',
         EventStart: '',
-        EventEnd: ''
+        EventEnd: '',
+        errorMessageAdd: ''
     });
     const [cancelledEvent, setCancelledEvent] = useState(null);
     const [cancellationReason, setCancellationReason] = useState('');
 
     useEffect(() => {
         fetchEvents();
+        fetchCategories();
     }, []);
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch('/api/events');
-            const data = await response.json();
-            setEvents(data);
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/list');
+            const dataList = await response.json();
+            setDataList(dataList.Events);
+            console.log(dataList.Events);
         } catch (error) {
             console.error('Erreur lors de la récupération des événements:', error);
         }
     };
 
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/category/list');
+            const dataCate = await response.json();
+            setDataCate(dataCate.Categories);
+            // console.log(dataCate.Categories)
+        } catch (error) {
+            console.error('Erreur lors de la récupération des catégories:', error);
+        }
+    };
+
+
     const handleAddEvent = async () => {
         try {
-            const response = await fetch('/api/events', {
+            console.log(newEvent)
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,12 +66,13 @@ export default function Dashboard() {
                 EventDescription: '',
                 EventSlots: '',
                 EventAgeneed: '',
-                EventCategoryId: '',
+                CategoryId: '',
                 EventStart: '',
                 EventEnd: ''
             });
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'événement:', error);
+            setErrorMessageAdd('Erreur lors de l\'ajout de l\'événement')
         }
     };
 
@@ -98,6 +81,11 @@ export default function Dashboard() {
     };
 
     const handleCancelConfirm = async () => {
+        if (cancellationReason === ''){
+            setErrorMessage('Veuillez entrer une raison d\'annulation');
+            return;
+        } 
+            
         try {
             const response = await fetch(`/api/events/${cancelledEvent.IdEvent}`, {
                 method: 'POST',
@@ -111,7 +99,7 @@ export default function Dashboard() {
             setCancelledEvent(null);
             setCancellationReason('');
         } catch (error) {
-            console.error('Erreur lors de l\'annulation de l\'événement:', error);
+            setErrorMessage('Erreur lors de l\'annulation de l\'événement');
         }
     };
 
@@ -119,10 +107,11 @@ export default function Dashboard() {
         <div>
             <Header />
             <div className="dashboard">
-                <h2>Dashboard</h2>
+                <h2 data-testid="dashboardID">Dashboard</h2>
                 <div className='event-card'>
                     <h3>Ajouter un événement</h3>
                     <input
+                        data-testid="eventDescription"
                         type="text"
                         placeholder="Description de l'événement"
                         value={newEvent.EventDescription}
@@ -135,16 +124,11 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
                     />
                     <input
+                        data-testid="eventAge"
                         type="text"
                         placeholder="Age requis"
                         value={newEvent.EventAgeneed}
                         onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Catégorie ID"
-                        value={newEvent.EventCategoryId}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventCategoryId: e.target.value })}
                     />
                     <input
                         type="datetime-local"
@@ -158,37 +142,54 @@ export default function Dashboard() {
                         value={newEvent.EventEnd}
                         onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
                     />
-                    <button onClick={handleAddEvent}>Ajouter</button>
+                    <select
+                        data-testid="eventCategory"
+                        value={newEvent.CategoryId}
+                        onChange={(e) => setNewEvent({ ...newEvent, CategoryId: e.target.value })}
+                        >
+                        <option value="" disabled>
+                            Choisissez une catégorie
+                        </option>
+                        {dataCate.map((category) => (
+                            <option key={category.IdEvent} value={category.IdEvent}>
+                            {category.CategoryName}
+                            </option>
+                        ))}
+                        </select>
+                    <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
+                    <p data-testid="error-Message-Add">{errorMessageAdd}</p>
                 </div>
                 <section className="cards">
-                {cancelledEvent && (
-                    <div>
-                        <h3>Annuler l'événement "{cancelledEvent.EventDescription}"</h3>
-                        <textarea
-                            placeholder="Raison de l'annulation"
-                            value={cancellationReason}
-                            onChange={(e) => setCancellationReason(e.target.value)}
-                        />
-                        <button onClick={handleCancelConfirm}>Confirmer</button>
-                        <button onClick={() => setCancelledEvent(null)}>Annuler</button>
-                    </div>
-                )}
-                <h3>Événements</h3>
-                <div className="card-container">
-                    {eventsData.map((event) => (
-                        <ul key={event.IdEvent} className="card">
-                            <li>{event.EventDescription}</li>
-                            <li>Places disponibles : {event.EventSlots}</li>
-                            <li>Âge requis : {event.EventAgeneed}</li>
-                            <li>Catégorie ID : {event.EventCategoryId}</li>
-                            <li>Début : {new Date(event.EventStart).toLocaleString()}</li>
-                            <li>Fin : {new Date(event.EventEnd).toLocaleString()}</li>
-                            <button onClick={() => handleCancelEvent(event)}>
-                                {event.cancelled ? 'Annulé' : 'Annuler'}
-                            </button>
-                        </ul>
-                    ))}
-                </div>
+                    {cancelledEvent && (
+                        <div className='cancelledEvent'>
+                            <h3>Annuler l'événement "{cancelledEvent.EventDescription}"</h3>
+                            <textarea
+                                data-testid="cancelTextArea"
+                                placeholder="Raison de l'annulation"
+                                value={cancellationReason}
+                                onChange={(e) => setCancellationReason(e.target.value)}
+                            />
+                            {errorMessage && <p>{errorMessage}</p>}
+                            <button data-testid="submit-cancel" onClick={handleCancelConfirm}>Confirmer</button>
+                            <button onClick={() => setCancelledEvent(null)}>Retour</button>
+                        </div>
+                    )}
+                    <h3 data-testid="events">Événements</h3>
+                    <ul className="card-container">
+                        {dataList.map((event) => (
+                            <li key={event.IdEvent} className="card">
+                                <p>{event.EventDescription}</p>
+                                <p>Places disponibles : {event.EventSlots}</p>
+                                <p>Âge requis : {event.EventAgeneed}</p>
+                                <p>Catégorie : {event.EventCategoryId}</p>
+                                <p>Début : {new Date(event.EventStart).toLocaleString()}</p>
+                                <p>Fin : {new Date(event.EventEnd).toLocaleString()}</p>
+                                <button onClick={() => handleCancelEvent(event)}>
+                                    {event.cancelled ? 'Confirmer' : 'Annuler'}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 </section>
             </div>
             <Footer />

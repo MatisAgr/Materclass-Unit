@@ -50,15 +50,17 @@
 
 .cards .card-container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.cards ul {
+.cards .card-container .card {
     list-style-type: none;
     padding: 25px;
     border: 3px solid;
-    width: 100%;
+    width: 25%;
 }
 
 .cards li {

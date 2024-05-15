@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 14 mai 2024 à 09:50
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.1.25
+-- Généré le : mer. 15 mai 2024 à 11:35
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,20 +28,18 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cancel` (
-  `cancel_id` varchar(36) NOT NULL DEFAULT uuid(),
-  `cancel_event_id` varchar(36) NOT NULL,
+  `cancel_id` int(1) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `cancel_event_id` int(1) NOT NULL,
   `cancel_invoice_id` varchar(36) NOT NULL,
   `cancel_reason` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
 
 --
 -- Structure de la table `categories`
 --
 
 CREATE TABLE `categories` (
-  `category_id` int(11) NOT NULL,
+  `category_id` int(1) NOT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -59,7 +57,7 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 --
 
 CREATE TABLE `events` (
-  `event_id` varchar(16) GENERATED ALWAYS AS (uuid()) VIRTUAL,
+  `event_id` int(1) NOT NULL,
   `event_desc` varchar(255) NOT NULL,
   `event_start` datetime NOT NULL,
   `event_end` datetime NOT NULL,
@@ -72,11 +70,11 @@ CREATE TABLE `events` (
 -- Déchargement des données de la table `events`
 --
 
-INSERT INTO `events` (`event_desc`, `event_start`, `event_end`, `event_slots`, `event_ageneed`, `event_category_id`) VALUES
-('Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
-('Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
-('Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
-('Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1);
+INSERT INTO `events` (`event_id`, `event_desc`, `event_start`, `event_end`, `event_slots`, `event_ageneed`, `event_category_id`) VALUES
+(1, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
+(2, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
+(3, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
+(4, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -98,7 +96,7 @@ CREATE TABLE `invoices` (
 --
 
 CREATE TABLE `users` (
-  `user_id` AUTO_INCREMENT PRIMARY KEY,
+  `user_id` int(1),
   `user_username` varchar(45) NOT NULL,
   `user_mail` varchar(45) NOT NULL,
   `user_passwd` varchar(255) NOT NULL,
@@ -114,7 +112,6 @@ CREATE TABLE `users` (
 -- Index pour la table `cancel`
 --
 ALTER TABLE `cancel`
-  ADD PRIMARY KEY (`cancel_id`),
   ADD KEY `cancel_invoice_id_idx` (`cancel_invoice_id`),
   ADD KEY `cancel_event_id_idx` (`cancel_event_id`);
 
@@ -129,6 +126,7 @@ ALTER TABLE `categories`
 -- Index pour la table `events`
 --
 ALTER TABLE `events`
+  ADD PRIMARY KEY (`event_id`),
   ADD KEY `event_category_id_idx` (`event_category_id`);
 
 --
@@ -147,6 +145,12 @@ ALTER TABLE `invoices`
 --
 ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `events`
+--
+ALTER TABLE `events`
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées

@@ -7,6 +7,13 @@ class UsersTest extends TestCase
 {
     private $db;
     private $users;
+    private $user_username = 'Test User';
+    private $user_real_mail = 'testusertesttestuseruser@test.com';
+    private $user_fake_mail = 'testuser';
+    private $user_passwd = 'password';
+    private $user_real_birth = '2000-01-01';
+    private $user_fake_birth = '2000-01-32';
+    private $user_role = 'user';
 
     public function setUp(): void
     {
@@ -17,11 +24,11 @@ class UsersTest extends TestCase
 
     public function testCreateUser()
     {
-        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
+        $this->users->createUser($this->user_username, $this->user_real_mail, $this->user_passwd, $this->user_real_birth, $this->user_role);
 
-        $stmt = $this->users->getUserId(1);
+        $stmt = $this->db->query("SELECT * FROM users WHERE user_mail = '$this->user_real_mail'")->fetch();
 
-        $this->assertEquals('Test User', $stmt['user_username']);
+        $this->assertEquals($this->user_username, $stmt['user_username']);
     }
     
     public function testCreateUserWithInvalidEmail()
@@ -29,7 +36,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid email address');
         
-        $this->users->createUser('Test User', 'testuser', 'password', '2000-01-01', 'user');
+        $this->users->createUser($this->user_username, 'testuser', $this->user_passwd, $this->user_real_birth, 'user');
     }
 
     public function testCreateUserWithInvalidPassword()
@@ -37,7 +44,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('All fields are required');
         
-        $this->users->createUser('Test User', 'testuser@test.com', NULL, '2000-01-01', 'user');
+        $this->users->createUser($this->user_username, $this->user_real_mail, NULL, $this->user_real_birth, 'user');
     }
 
     public function testCreateUserWithInvalidBirthDate()
@@ -45,7 +52,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid birth date');
         
-        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-32', 'user');
+        $this->users->createUser($this->user_username, $this->user_real_mail, $this->user_passwd, $this->user_fake_birth, 'user');
     }
 
     public function testCreateUserWithInvalidRole()
@@ -53,7 +60,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid role');
         
-        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-01', 'invalid');
+        $this->users->createUser($this->user_username, $this->user_real_mail, $this->user_passwd, $this->user_real_birth, 'invalid');
     }
 
     public function testCreateUserWithExistingEmail()
@@ -61,14 +68,14 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Email already exists');
         
-        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
+        $this->users->createUser($this->user_username, $this->user_real_mail, $this->user_passwd, $this->user_real_birth, 'user');
     }
 
     public function testGetUserId()
     {
         $stmt = $this->users->getUserId(1);
 
-        $this->assertEquals('Test User', $stmt['user_username']);
+        $this->assertEquals('admin', $stmt['user_username']);
     }
 
     public function testGetUserIdWithInvalidId()
@@ -81,9 +88,9 @@ class UsersTest extends TestCase
 
     public function testGetUserByEmail()
     {
-        $stmt = $this->users->getUserByEmail('testuser@test.com');
+        $stmt = $this->users->getUserByEmail($this->user_real_mail);
 
-        $this->assertEquals('Test User', $stmt['user_username']);
+        $this->assertEquals($this->user_username, $stmt['user_username']);
     }
 
     public function testGetUserByEmailWithInvalidEmail()
@@ -91,17 +98,17 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid email address');
         
-        $this->users->getUserByEmail('testuser');
+        $this->users->getUserByEmail($this->user_fake_mail);
     }
 
     public function testGetUserByEmailAndPassword()
     {
-        $email = 'testuser@test.com';
+        $email = $this->user_real_mail;
 
-        $user = $this->users->getUserByEmailAndPassword($email, 'password');
+        $user = $this->users->getUserByEmailAndPassword($email, $this->user_passwd);
 
         $this->assertEquals($email, $user['user_mail']);
-        $this->assertEquals('Test User', $user['user_username']);
+        $this->assertEquals($this->user_username, $user['user_username']);
     }
 
     public function testGetUserByEmailAndPasswordWithInvalidEmail()
@@ -109,7 +116,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid email address');
         
-        $this->users->getUserByEmailAndPassword('testuser', 'password');
+        $this->users->getUserByEmailAndPassword($this->user_fake_mail, $this->user_passwd);
     }
 
     public function testGetUserByEmailAndPasswordWithInvalidPassword()
@@ -117,7 +124,7 @@ class UsersTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('All fields are required');
         
-        $this->users->getUserByEmailAndPassword('testuser@test.com', NULL);
+        $this->users->getUserByEmailAndPassword($this->user_real_mail, NULL);
     }
 
     public function testGetAllUsers()
@@ -129,9 +136,10 @@ class UsersTest extends TestCase
 
     public function testDeleteUser()
     {
-        $this->users->deleteUser(1);
+        $last_user_id = $this->db->query("SELECT MAX(user_id) FROM users")->fetchColumn();
+        $this->users->deleteUser($last_user_id);
 
-        $stmt = $this->users->getUserId(1);
+        $stmt = $this->users->getUserId($last_user_id);
 
         $this->assertEmpty($stmt);
     }

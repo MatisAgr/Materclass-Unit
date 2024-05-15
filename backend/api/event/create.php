@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
     }else {
-        http_response_code(405);
+        http_response_code(400);
         $jsonData = [
-            'code' => 405,
+            'code' => 400,
             'status' => 'error',
             'message' => 'One or some arguments are missing.'
         ];

@@ -32,6 +32,15 @@ class Events {
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_description, PDO::PARAM_STR);
+
+        $query->execute();
+        return $result = $query->fetch();
+    }
+
+    public function getEventById($event_id){
+        $sql = "SELECT * FROM `events` WHERE `event_id` = $event_id";
+        $query = $this->db->prepare($sql);
+
         $query->execute();
         return $result = $query->fetch();
     }
@@ -50,19 +59,18 @@ class Events {
         event_end = :col3,
         event_slots = :col4,
         event_ageneed = :col5,
-        event_category_id = $event_category_id WHERE `event_id` = :col6";
+        event_category_id = $event_category_id WHERE `event_id` = $event_id";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_desc, PDO::PARAM_STR);
         $query->bindValue(':col2', $event_start, PDO::PARAM_STR);
         $query->bindValue(':col3', $event_end, PDO::PARAM_STR);
         $query->bindValue(':col4', $event_slots, PDO::PARAM_STR);
         $query->bindValue(':col5', $event_ageneed, PDO::PARAM_STR);
-        $query->bindValue(':col6', $event_id, PDO::PARAM_STR);
         $query->execute();
     }
 
     public function deleteEvent($event_id){
-        $sql = "DELETE FROM `events` WHERE `event_id` = :col1";
+        $sql = "DELETE FROM `events` WHERE `event_id` = $event_id";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
         $query->execute();

@@ -22,12 +22,32 @@ class Users {
         $query->bindValue(':col4', $user_birth, PDO::PARAM_STR);
         $query->bindValue(':col5', $user_role, PDO::PARAM_STR);
         $query->execute();
+
+        return $this->db->lastInsertId();
     }
 
     public function getUserId($user_id){
         $sql = "SELECT * FROM `users` WHERE `user_id` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $user_id, PDO::PARAM_INT);
+        $query->execute();
+        return $result = $query->fetch();
+    }
+
+    public function getUserByEmail($user_email){
+        $sql = "SELECT * FROM `users` WHERE `user_mail` = :col1";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':col1', $user_email, PDO::PARAM_STR);
+        $query->execute();
+        return $result = $query->fetch();
+    }
+
+    public function getUserByEmailAndPassword($user_email, $user_passwd){
+        $sql = "SELECT * FROM `users` 
+        WHERE `user_mail` = :col1 AND  `user_passwd` = :col2";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':col1', $user_email, PDO::PARAM_STR);
+        $query->bindValue(':col2', $user_passwd, PDO::PARAM_STR);
         $query->execute();
         return $result = $query->fetch();
     }
@@ -44,5 +64,18 @@ class Users {
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $user_id, PDO::PARAM_INT);
         $query->execute();
+    }
+
+
+    // reservation for event methods
+    public function createReservation(){
+
+    }
+
+    public function getAllEventsForUser($user_id){
+        $sql = "SELECT * FROM `invoices` WHERE `user_id` = $user_id";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+        return $result = $query->fetchAll();
     }
 }

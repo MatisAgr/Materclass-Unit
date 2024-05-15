@@ -32,6 +32,7 @@ class Events {
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_description, PDO::PARAM_STR);
+
         $query->execute();
         return $result = $query->fetch();
     }
@@ -39,6 +40,7 @@ class Events {
     public function getEventById($event_id){
         $sql = "SELECT * FROM `events` WHERE `event_id` = $event_id";
         $query = $this->db->prepare($sql);
+
         $query->execute();
         return $result = $query->fetch();
     }
@@ -74,4 +76,19 @@ class Events {
         $query->execute();
     }
 
+    public function getEventById($eventId) {
+        $sql = "SELECT * FROM `events` WHERE `event_id` = :col1";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':col1', $eventId, PDO::PARAM_INT);
+        $query->execute();
+        return $result = $query->fetch();
+    }
+
+    public function cancelEvent($event_id, $cancel_reason) {
+            $sql = "INSERT INTO `cancel` (`cancel_event_id`, `cancel_reason`) VALUES (:col1, :col2)";
+            $query = $this->db->prepare($sql);
+            $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
+            $query->bindValue(':col2', $cancel_reason, PDO::PARAM_STR);
+            $query->execute();
+    }
 }

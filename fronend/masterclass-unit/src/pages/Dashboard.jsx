@@ -1,5 +1,3 @@
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import { useState, useEffect } from 'react';
 
 import './Dashboard.css';
@@ -8,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
-    const [errorMessageAdd, setErrorMessageAdd] = useState('');
+    const [MessageAdd, setMessageAdd] = useState('');
     const [events, setEvents] = useState([]);
     const [dataList, setDataList] = useState([]);
     const [dataCate, setDataCate] = useState([]);
@@ -26,7 +24,7 @@ export default function Dashboard() {
 
     useEffect(() => {
      
-        const role = localStorage.getItem('Role');
+        const role = localStorage.getItem('userRole');
         console.log(role)
         if (role != 'admin') {
             navigate('/login');
@@ -51,12 +49,10 @@ export default function Dashboard() {
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/category/list');
             const dataCate = await response.json();
             setDataCate(dataCate.Categories);
-            // console.log(dataCate.Categories)
         } catch (error) {
             console.error('Erreur lors de la récupération des catégories:', error);
         }
     };
-
 
     const handleAddEvent = async () => {
         try {
@@ -83,9 +79,10 @@ export default function Dashboard() {
                 EventStart: '',
                 EventEnd: ''
             });
+            fetchEvents();
+            setMessageAdd('Événement ajouté avec succès');
         } catch (error) {
-            console.error('Erreur lors de l\'ajout de l\'événement:', error);
-            setErrorMessageAdd('Erreur lors de l\'ajout de l\'événement')
+            setMessageAdd('Erreur lors de l\'ajout de l\'événement')
         }
     };
     
@@ -99,7 +96,6 @@ export default function Dashboard() {
             setErrorMessage('Veuillez entrer une raison d\'annulation');
             return;
         } 
-            
         try {
             const response = await fetch(`/api/events/${cancelledEvent.IdEvent}`, {
                 method: 'POST',
@@ -119,7 +115,6 @@ export default function Dashboard() {
 
     return (
         <div>
-            <Header />
             <div className="dashboard">
                 <h2 data-testid="dashboardID">Dashboard</h2>
                 <div className='event-card'>
@@ -171,7 +166,7 @@ export default function Dashboard() {
                         ))}
                         </select>
                     <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
-                    <p data-testid="error-Message-Add">{errorMessageAdd}</p>
+                    <p data-testid="error-Message-Add">{MessageAdd}</p>
                 </div>
                 <section className="cards">
                     {cancelledEvent && (
@@ -206,7 +201,6 @@ export default function Dashboard() {
                     </ul>
                 </section>
             </div>
-            <Footer />
         </div>
     );
 }

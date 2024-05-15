@@ -60,14 +60,19 @@ export default function Dashboard() {
 
     const handleAddEvent = async () => {
         try {
-            console.log(newEvent)
+            const formData = new FormData();
+            formData.append('EventDescription', newEvent.EventDescription);
+            formData.append('EventStart', newEvent.EventStart);
+            formData.append('EventEnd', newEvent.EventEnd);
+            formData.append('EventSlots', newEvent.EventSlots);
+            formData.append('EventAgeneed', newEvent.EventAgeneed);
+            formData.append('CategoryId', newEvent.CategoryId);
+    
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newEvent),
+                body: formData,
             });
+    
             const data = await response.json();
             setEvents([...events, data]);
             setNewEvent({
@@ -83,6 +88,7 @@ export default function Dashboard() {
             setErrorMessageAdd('Erreur lors de l\'ajout de l\'événement')
         }
     };
+    
 
     const handleCancelEvent = (event) => {
         setCancelledEvent(event);

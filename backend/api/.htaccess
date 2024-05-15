@@ -1,14 +1,15 @@
 # protect .htaccess
-<Files ~ "^.\*\.([Hh][Tt][Aa])">
-Order allow,deny
-Deny from all
-Satisfy all
+<Files ~ "^.*\.([Hh][Tt][Aa])">
+  Order allow,deny
+  Deny from all
+  Satisfy all
 </Files>
 
-Header add Access-Control-Allow-Origin "*"
-Header add Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
-Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-Header add Access-Control-Allow-Headers: "Authorization"
+# Allow cross-origin requests
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+Header always set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+Header always set Access-Control-Allow-Credentials "true"
 
 RewriteEngine On
 
@@ -20,22 +21,20 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
 # RewriteRule ^products products.php
 
-RewriteRule ^event/list$ event/list.php
-RewriteRule ^event/event$ event/event.php
-RewriteRule ^event/create$ event/create.php
-RewriteRule ^event/update$ event/update.php
-RewriteRule ^event/cancel$ event/cancel.php
+RewriteRule ^event/list$ event/list.php [L]
+RewriteRule ^event/event$ event/event.php [L]
+RewriteRule ^event/create$ event/create.php [L]
+RewriteRule ^event/update$ event/update.php [L]
+RewriteRule ^event/cancel$ event/cancel.php [L]
 
-RewriteRule ^category/list$ category/list.php
-RewriteRule ^category/category$ category/category.php
-RewriteRule ^category/create$ category/create.php
+RewriteRule ^category/list$ category/list.php [L]
+RewriteRule ^category/category$ category/category.php [L]
+RewriteRule ^category/create$ category/create.php [L]
 
-RewriteRule ^category/update$ category/update.php
+RewriteRule ^category/update$ category/update.php [L]
 
-
-RewriteRule ^user/login$ user/login.php
-RewriteRule ^user/signin$ user/signin.php
-RewriteRule ^user/logout$ user/logout.php
-RewriteRule ^user/user$ user/user.php
-RewriteRule ^user/reservate$ user/reservate.php
-
+RewriteRule ^user/login$ user/login.php [L]
+RewriteRule ^user/signin$ user/signin.php [L]
+RewriteRule ^user/logout$ user/logout.php [L]
+RewriteRule ^user/user$ user/user.php [L]
+RewriteRule ^user/reservate$ user/reservate.php [L]

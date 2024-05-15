@@ -37,5 +37,4 @@ class Invoices {
         $query->execute();
         return $result = $query->fetchAll();
     }
-    
 }

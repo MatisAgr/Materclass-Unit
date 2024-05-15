@@ -9,6 +9,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import Events from './pages/Events';
 import Dashboard from './pages/Dashboard';
+import ProfilePage from './pages/Profile';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </Router>
   );

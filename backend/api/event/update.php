@@ -1,4 +1,5 @@
 <?php
+// update a event
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
@@ -6,7 +7,6 @@ require_once '../../vendor/autoload.php';
 use Masterticket\Events;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     if(isset($_POST['EventDescription'], $_POST['EventSlots'], $_POST['EventAgeneed'])){
         $jsonData = [];
 
@@ -33,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'EventEnd' => $eventEnd
         ];
     }else {
-        http_response_code(405);
+        http_response_code(400);
         $jsonData = [
-            'code' => 405,
+            'code' => 400,
             'status' => 'error',
             'message' => 'One or some arguments are missing.'
         ];

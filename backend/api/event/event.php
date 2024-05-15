@@ -1,5 +1,5 @@
 <?php
-// get one event by idEvent
+// get one event
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $eventStart = $eventData['event_start'];
 
             $category = new Category();
-            $eventCategory = $category->getEventById($eventCategoryId);
+            $eventCategory = $category->getCategoryById($eventCategoryId);
             $eventCategoryName = ($eventCategory)? $eventCategory['category_name'] : '';
 
             $jsonData = [
@@ -43,17 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'EventEnd' => $eventEnd
             ];
         }else {
+            http_response_code(401);
             $jsonData =  [
-                'code' => 200,
-                'status' => 'success',
+                'code' => 401,
+                'status' => 'error',
                 'message' => 'No data for this event'
             ];
         }       
 
     }else {
-        http_response_code(405);
+        http_response_code(400);
         $jsonData = [
-            'code' => 405,
+            'code' => 400,
             'status' => 'error',
             'message' => 'One or some arguments are missing.'
         ];

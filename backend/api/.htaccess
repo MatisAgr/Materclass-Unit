@@ -29,4 +29,13 @@ RewriteRule ^event/cancel$ event/cancel.php
 RewriteRule ^category/list$ category/list.php
 RewriteRule ^category/category$ category/category.php
 RewriteRule ^category/create$ category/create.php
+
 RewriteRule ^category/update$ category/update.php
+
+
+RewriteRule ^user/login$ user/login.php
+RewriteRule ^user/signin$ user/signin.php
+RewriteRule ^user/logout$ user/logout.php
+RewriteRule ^user/user$ user/user.php
+RewriteRule ^user/reservate$ user/reservate.php
+

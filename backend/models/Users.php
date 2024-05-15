@@ -73,7 +73,7 @@ class Users {
     }
 
     public function getAllEventsForUser($user_id){
-        $sql = "SELECT * FROM `history` WHERE `user_id` = $user_id";
+        $sql = "SELECT * FROM `invoices` WHERE `user_id` = $user_id";
         $query = $this->db->prepare($sql);
         $query->execute();
         return $result = $query->fetchAll();

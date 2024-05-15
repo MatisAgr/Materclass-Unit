@@ -25,7 +25,7 @@ class Users {
     }
 
     public function getUserId($user_id){
-        $sql = "SELECT * FROM `user` WHERE `user_id` = :col1";
+        $sql = "SELECT * FROM `users` WHERE `user_id` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $user_id, PDO::PARAM_INT);
         $query->execute();

@@ -3,7 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use Masterticket\Database;
 use Masterticket\Users;
-
 class UsersTest extends TestCase
 {
     private $db;
@@ -18,10 +17,11 @@ class UsersTest extends TestCase
 
     public function testCreateUser()
     {
-        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
+        $this->users->createEvent('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
 
-        $stmt = $this->users->getUserByUsername('Test User');
+        $stmt = $this->users->getUserId('1');
 
         $this->assertEquals('Test User', $stmt['user_username']);
     }
+    
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css'
+import './Form.css'
 
-function LoginPage() {
+export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(false);
@@ -25,13 +25,11 @@ function LoginPage() {
     }
   };
 
-
-
   return (
     <div>
       <section>
         <h1>Login</h1>
-        <form id="loginForm" data-testid="login-form" onSubmit={handleLogin}>
+        <form id="formStyle" data-testid="login-form" onSubmit={handleLogin}>
           <label>
             Username:
             <input data-testid="username-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
@@ -40,7 +38,7 @@ function LoginPage() {
             Password:
             <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
           </label>
-          <button data-testid="submit-login-button" className="loginButton" type="submit" disabled={disabled}>Login</button>
+          <button data-testid="submit-login-button" className='formbutton' type="submit" disabled={disabled}>Login</button>
           <p data-testid="error-message">{errorMessage}</p>
           <Link data-testid="register-link" to="/register">Register</Link>
         </form>
@@ -48,7 +46,3 @@ function LoginPage() {
     </div>
   );
 }
-
-
-export default LoginPage;
-

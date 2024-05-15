@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Vérification si l'e-mail de l'utilisateur existe dans la base de données
         $userData = $users->getUserByEmail($userMail);
         if(!$userData){
-            $idUser = $users->createEvent($userUsername, $userMail, $userPassword, $userBirth, $userRole);
+            $idUser = $users->createUser($userUsername, $userMail, $userPassword, $userBirth, $userRole);
 
             // Données de session
             $_SESSION['userId'] = $idUser;

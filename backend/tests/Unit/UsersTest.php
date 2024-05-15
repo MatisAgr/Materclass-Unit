@@ -17,7 +17,7 @@ class UsersTest extends TestCase
 
     public function testCreateUser()
     {
-        $this->users->createEvent('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
+        $this->users->createUser('Test User', 'testuser@test.com', 'password', '2000-01-01', 'user');
 
         $stmt = $this->users->getUserId('1');
 

@@ -12,7 +12,7 @@ class Users {
         $this->db = $this->db->connect();
     }
 
-    public function createEvent($user_username, $user_mail, $user_passwd, $user_birth, $user_role){
+    public function createUser($user_username, $user_mail, $user_passwd, $user_birth, $user_role){
         $sql = "INSERT INTO `users`(`user_username`, `user_mail`, `user_passwd`, `user_birth`, `user_role`) 
         VALUES (:col1, :col2, :col3, :col4, :col5)";
         $query = $this->db->prepare($sql);

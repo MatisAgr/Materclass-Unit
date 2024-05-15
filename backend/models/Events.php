@@ -37,14 +37,6 @@ class Events {
         return $result = $query->fetch();
     }
 
-    public function getEventById($event_id){
-        $sql = "SELECT * FROM `events` WHERE `event_id` = $event_id";
-        $query = $this->db->prepare($sql);
-
-        $query->execute();
-        return $result = $query->fetch();
-    }
-
     public function getAllEvents(){
         $sql = "SELECT * FROM `events`";
         $query = $this->db->prepare($sql);

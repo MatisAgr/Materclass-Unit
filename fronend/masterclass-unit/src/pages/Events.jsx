@@ -85,7 +85,7 @@ const EventList = () => {
                                 <p data-testid="event-slots">Slots : {event.EventSlots}</p>
                                 <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
                                 {/* Display the category name if category is found */}
-                                <p data-testid="event-cat">Category : {category.CategoryName}</p>
+                                {category && <p data-testid="event-cat">Category : {category.CategoryName}</p>}
                                 <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
                             </li>
                         );

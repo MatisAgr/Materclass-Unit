@@ -1,22 +1,21 @@
-# protect .htaccess
+# Protection du fichier .htaccess
 <Files ~ "^.*\.([Hh][Tt][Aa])">
-  Order allow,deny
-  Deny from all
-  Satisfy all
+    Order allow,deny
+    Deny from all
+    Satisfy all
 </Files>
 
-# Allow cross-origin requests
-Header always set Access-Control-Allow-Origin "http://localhost:3000"
-Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
-Header always set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-Header always set Access-Control-Allow-Credentials "true"
+# Configuration CORS
+Header set Access-Control-Allow-Origin "http://localhost:3000"
+Header set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 
+# Activation de la réécriture d'URL
 RewriteEngine On
-
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 
 # RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
 # RewriteRule ^products products.php

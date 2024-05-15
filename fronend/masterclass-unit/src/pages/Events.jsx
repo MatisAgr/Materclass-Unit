@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./EventList.css"
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
+
 
 const EventList = () => {
     const [events, setEvents] = useState([]);
@@ -69,7 +68,6 @@ const EventList = () => {
 
     return (
         <>
-            <Header />
             <div className="event-list">
                 <h2 data-testid="event-page-title">Upcoming Events</h2>
                 <ul>
@@ -112,7 +110,6 @@ const EventList = () => {
                     </div>
                 </div>
             )}
-            <Footer />
         </>
     );
 };

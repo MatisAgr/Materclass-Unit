@@ -66,7 +66,6 @@ class Users {
         $query->execute();
     }
 
-
     // reservation for event methods
     public function createReservation(){
 

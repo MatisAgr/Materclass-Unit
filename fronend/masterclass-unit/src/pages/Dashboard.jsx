@@ -3,8 +3,10 @@ import Footer from '../Components/Footer';
 import { useState, useEffect } from 'react';
 
 import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [errorMessageAdd, setErrorMessageAdd] = useState('');
     const [events, setEvents] = useState([]);
@@ -23,6 +25,12 @@ export default function Dashboard() {
     const [cancellationReason, setCancellationReason] = useState('');
 
     useEffect(() => {
+     
+        const role = localStorage.getItem('Role');
+        console.log(role)
+        if (role != 'admin') {
+            navigate('/login');
+        }
         fetchEvents();
         fetchCategories();
     }, []);

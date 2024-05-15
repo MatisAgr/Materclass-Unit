@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 15 mai 2024 à 11:35
+-- Généré le : mer. 15 mai 2024 à 12:47
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -28,18 +28,27 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cancel` (
-  `cancel_id` int(1) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `cancel_id` int(1) NOT NULL,
   `cancel_event_id` int(1) NOT NULL,
   `cancel_invoice_id` varchar(36) NOT NULL,
   `cancel_reason` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Déchargement des données de la table `cancel`
+--
+
+INSERT INTO `cancel` (`cancel_id`, `cancel_event_id`, `cancel_invoice_id`, `cancel_reason`) VALUES
+(1, 2, '', '\"Just a Test\"');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `categories`
 --
 
 CREATE TABLE `categories` (
-  `category_id` int(1) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -57,7 +66,7 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 --
 
 CREATE TABLE `events` (
-  `event_id` int(1) NOT NULL,
+  `event_id` int(11) NOT NULL,
   `event_desc` varchar(255) NOT NULL,
   `event_start` datetime NOT NULL,
   `event_end` datetime NOT NULL,
@@ -74,7 +83,12 @@ INSERT INTO `events` (`event_id`, `event_desc`, `event_start`, `event_end`, `eve
 (1, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
 (2, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
 (3, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
-(4, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1);
+(4, 'Festival des developpeurs', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 15, 18, 1),
+(6, '\"Concert Musique\"', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 1),
+(7, '\"Concert Musique\"', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 250, 16, 1),
+(8, '\"Concert Musique\"', '2024-05-14 12:00:00', '2024-05-14 15:00:00', 250, 16, 1),
+(9, '\"Concert Musique\"', '2024-05-14 12:00:00', '2024-05-14 15:00:00', 250, 16, 1),
+(10, 'Concert Musique', '2024-05-14 12:00:00', '2024-05-14 15:00:00', 250, 16, 1);
 
 -- --------------------------------------------------------
 
@@ -96,9 +110,9 @@ CREATE TABLE `invoices` (
 --
 
 CREATE TABLE `users` (
-  `user_id` int(1),
+  `user_id` int(11) NOT NULL UNIQUE,
   `user_username` varchar(45) NOT NULL,
-  `user_mail` varchar(45) NOT NULL,
+  `user_mail` varchar(45) NOT NULL UNIQUE,
   `user_passwd` varchar(255) NOT NULL,
   `user_birth` date NOT NULL,
   `user_role` enum('user','admin') NOT NULL
@@ -112,6 +126,7 @@ CREATE TABLE `users` (
 -- Index pour la table `cancel`
 --
 ALTER TABLE `cancel`
+  ADD PRIMARY KEY (`cancel_id`),
   ADD KEY `cancel_invoice_id_idx` (`cancel_invoice_id`),
   ADD KEY `cancel_event_id_idx` (`cancel_event_id`);
 
@@ -137,8 +152,20 @@ ALTER TABLE `invoices`
   ADD KEY `invoice_event_id_idx` (`invoice_event_id`);
 
 --
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
+
+--
+-- AUTO_INCREMENT pour la table `cancel`
+--
+ALTER TABLE `cancel`
+  MODIFY `cancel_id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `categories`
@@ -150,7 +177,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées

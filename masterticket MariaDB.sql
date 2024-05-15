@@ -98,7 +98,7 @@ CREATE TABLE `invoices` (
 --
 
 CREATE TABLE `users` (
-  `user_id` varchar(16) GENERATED ALWAYS AS (uuid()) VIRTUAL,
+  `user_id` AUTO_INCREMENT PRIMARY KEY,
   `user_username` varchar(45) NOT NULL,
   `user_mail` varchar(45) NOT NULL,
   `user_passwd` varchar(255) NOT NULL,

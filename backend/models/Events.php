@@ -31,7 +31,7 @@ class Events {
     public function getEventByDescription($event_description){
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);
-        $query->bindValue(':col1', $event_description, PDO::PARAM_INT);
+        $query->bindValue(':col1', $event_description, PDO::PARAM_STR);
         $query->execute();
         return $result = $query->fetch();
     }

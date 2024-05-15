@@ -1,5 +1,6 @@
 <?php
 namespace Masterticket;
+
 use Dotenv\Dotenv;
 
 use PDO;

@@ -1,7 +1,9 @@
 <?php
+
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
+
 
 use Masterticket\Category;
 

@@ -27,6 +27,7 @@ class Events {
         $query->execute();
     }
 
+
     public function getEventByDescription($event_description){
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);

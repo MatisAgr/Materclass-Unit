@@ -37,17 +37,5 @@ class Invoices {
         $query->execute();
         return $result = $query->fetchAll();
     }
-
-    public function updateInvoice($invoice_id, $invoice_user_id, $invoice_event_id, $invoice_date){
-        $sql = "UPDATE `invoices` SET 
-        invoice_user_id = :col2,
-        invoice_event_id = :col3,
-        invoice_date = :col4 WHERE `invoice_id` = :col1";
-        $query = $this->db->prepare($sql);
-        $query->bindValue(':col1', $invoice_id, PDO::PARAM_STR);
-        $query->bindValue(':col2', $invoice_user_id, PDO::PARAM_STR);
-        $query->bindValue(':col3', $invoice_event_id, PDO::PARAM_STR);
-        $query->bindValue(':col4', $invoice_date, PDO::PARAM_STR);
-        $query->execute();
-    }
+    
 }

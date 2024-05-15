@@ -32,7 +32,7 @@ CREATE DATABASE masterticket;
 USE masterticket;
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL UNIQUE,
+  `user_id` int(11) AUTO_INCREMENT NOT NULL UNIQUE,
   `user_username` varchar(45) NOT NULL,
   `user_mail` varchar(45) NOT NULL UNIQUE,
   `user_passwd` varchar(255) NOT NULL,

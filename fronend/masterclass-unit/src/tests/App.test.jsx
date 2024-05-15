@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from '../App'; // Importez directement votre composant App
+import App from '../App';
 
 test('renders home page on default route', () => {
   render(<App />);

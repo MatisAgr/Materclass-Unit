@@ -37,4 +37,5 @@ RewriteRule ^user/login$ user/login.php [L]
 RewriteRule ^user/signin$ user/signin.php [L]
 RewriteRule ^user/logout$ user/logout.php [L]
 RewriteRule ^user/user$ user/user.php [L]
-RewriteRule ^user/reservate$ user/reservate.php [L]
+
+RewriteRule ^invoice/create$ invoice/create.php [L]

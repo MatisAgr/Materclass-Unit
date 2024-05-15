@@ -32,6 +32,7 @@ class Events {
         $sql = "SELECT * FROM `events` WHERE `event_desc` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_description, PDO::PARAM_STR);
+
         $query->execute();
         return $result = $query->fetch();
     }
@@ -39,6 +40,7 @@ class Events {
     public function getEventById($event_id){
         $sql = "SELECT * FROM `events` WHERE `event_id` = $event_id";
         $query = $this->db->prepare($sql);
+
         $query->execute();
         return $result = $query->fetch();
     }

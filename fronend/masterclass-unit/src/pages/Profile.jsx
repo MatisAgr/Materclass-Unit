@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
+import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function UserProfilePage() {
+    const navigate = useNavigate();
   // Utilisateur fictife
   const [user, setUser] = useState({
     name: "nom premon",
@@ -51,8 +51,15 @@ function UserProfilePage() {
     { eventId: 14, eventName: "Concert14", date: "2023-02-22", quantity: 12, total: 323 },
   ];
 
+  useEffect(() => {
+    const role = localStorage.getItem('userRole');
+        // console.log(role)
+        if (role !== 'user' && role !== 'admin') {
+            navigate('/login');
+        }
+    }, []);
+
   return (
-    <div> <Header />
     <div className={styles.container}>
         <h1 className={styles.title}>Profil de {user.name}</h1>
         <div className={styles.profileContainer}>
@@ -101,8 +108,6 @@ function UserProfilePage() {
                 </tbody>
             </table>
         </div>
-    </div>
-    <Footer />
     </div>
 );
 }

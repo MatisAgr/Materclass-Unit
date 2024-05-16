@@ -1,6 +1,17 @@
 <?php
 // create event
-header('Content-type:application/json');
+header('Content-type: application/json');
+
+// Définition des en-têtes CORS ici pour éviter des duplications avec .htaccess
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+// Répondre immédiatement à la requête OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200); 
+    exit;
+}
 
 require_once '../../vendor/autoload.php';
 

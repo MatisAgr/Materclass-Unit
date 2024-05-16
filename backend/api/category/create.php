@@ -2,8 +2,13 @@
 
 header('Content-type:application/json');
 
-require_once '../../vendor/autoload.php';
+// Répondre immédiatement à la requête OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200); 
+    exit;
+}
 
+require_once '../../vendor/autoload.php';
 
 use Masterticket\Category;
 

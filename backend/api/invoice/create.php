@@ -1,6 +1,11 @@
 <?php
 // create reservation
 header('Content-type:application/json');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
 
 require_once '../../vendor/autoload.php';
 

@@ -8,6 +8,7 @@ const EventList = () => {
     const [confirmAge, setConfirmAge] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [categories, setCategories] = useState([]);
+    const userId = localStorage.getItem('userId');
 
     const toggleTicketModal = (event) => {
         setSelectedEvent(event);
@@ -83,7 +84,7 @@ const EventList = () => {
                                 <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
                                 {/* Display the category name if category is found */}
                                 {category && <p data-testid="event-cat">Category : {category.CategoryName}</p>}
-                                <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
+                                {userId && <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>}
                             </li>
                         );
                     })}

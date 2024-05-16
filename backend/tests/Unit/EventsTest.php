@@ -223,4 +223,9 @@ class EventsTest extends TestCase {
 
         $this->events->cancelEvent(2, NULL);
     }
+
+    public function tearDown(): void {
+        $this->db = null;
+        $this->events = null;
+    }
 }

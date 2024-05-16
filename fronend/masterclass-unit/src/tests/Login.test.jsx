@@ -4,7 +4,7 @@ import LoginPage from '../pages/Login';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Login', () => {
-    let usernameInput, passwordInput, submitButton, errorMessage, registerLink;
+    let loginForm, emailInput, passwordInput, submitButton, errorMessage, registerLink;
 
     /****Prepare ****/
     beforeEach(() => {
@@ -13,7 +13,8 @@ describe('Login', () => {
                 <LoginPage />
             </MemoryRouter>
         );
-        usernameInput = screen.getByTestId('username-input');
+        loginForm = screen.getByTestId('login-form');
+        emailInput = screen.getByTestId('userMail-input');
         passwordInput = screen.getByTestId('password-input');
         submitButton = screen.getByTestId('submit-login-button');
         errorMessage = screen.getByTestId('error-message');
@@ -23,9 +24,8 @@ describe('Login', () => {
     
     /***************** Test for rendering of login page *****************/
     test('renders login page', () => {
-        const loginForm = screen.getByTestId('login-form');
         expect(loginForm).toBeInTheDocument();
-        expect(usernameInput).toBeInTheDocument();
+        expect(emailInput).toBeInTheDocument();
         expect(passwordInput).toBeInTheDocument();
         expect(submitButton).toBeInTheDocument();
         expect(errorMessage).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('Login', () => {
 
     /***************** Test for initial state of input fields *****************/
     test('should render login form with initial state', () => {
-        expect(usernameInput).toHaveValue('');
+        expect(emailInput).toHaveValue('');
         expect(passwordInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
         expect(errorMessage).toHaveTextContent('');
@@ -47,11 +47,11 @@ describe('Login', () => {
     test('should enable submit button when username and password are entered', async () => {
         expect(submitButton).toBeDisabled();
 
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, { target: { value: 'testuser' } });
         fireEvent.change(passwordInput, { target: { value: 'testpass' } });
 
         await waitFor(() => {
-            expect(usernameInput.value).toBe('testuser');
+            expect(emailInput.value).toBe('testuser');
             expect(passwordInput.value).toBe('testpass');
             expect(submitButton).not.toBeDisabled();
         });
@@ -63,7 +63,7 @@ describe('Login', () => {
     });
 
     test('should display error message when username is empty', async () => {
-        expect(usernameInput).toHaveValue('');
+        expect(emailInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
 
         fireEvent.change(passwordInput, { target: { value: 'testpass' } });
@@ -78,17 +78,17 @@ describe('Login', () => {
         expect(passwordInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
 
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, { target: { value: 'testuser' } });
 
         await waitFor(() => {
-            expect(usernameInput.value).toBe('testuser');
+            expect(emailInput.value).toBe('testuser');
             expect(submitButton).toBeDisabled();
         });
 
     });
 
     test('should display error message when username and password are empty', async () => {
-        expect(usernameInput).toHaveValue('');
+        expect(emailInput).toHaveValue('');
         expect(passwordInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
 

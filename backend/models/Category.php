@@ -49,4 +49,11 @@ class Category {
         $query->bindValue(':col1', $category_name, PDO::PARAM_STR);
         $query->execute();
     }
+
+    public function deleteCategory($category_id){
+        $sql = "DELETE FROM `categories` WHERE `category_id` = :col1";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':col1', $category_id, PDO::PARAM_INT);
+        $query->execute();
+    }
 }

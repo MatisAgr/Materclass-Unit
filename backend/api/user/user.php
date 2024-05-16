@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $eventStart = $eventData['event_start'];
                 $eventEnd = $eventData['event_end'];
                 $long = "desc=$eventDescription&username=$userUsername&email=$userEmail&slots=$eventSlots&date=$eventStart&ageneed=$eventAgeneed";
-                $filename = "http://localhost/masterclass/Materclass-Unit/backend/api/user/pdf/generate.php?$long";
+                $filename = "http://localhost/Materclass-Unit/backend/api/user/pdf/generate.php?$long";
 
                  $jsonData['Events'][] = [
                     'IdEvent' => $idEvent,

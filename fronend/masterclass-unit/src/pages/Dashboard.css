@@ -68,6 +68,10 @@
     padding: 0;
 }
 
+.card.cancelled {
+    background-color: #ccc;
+}
+
 .cards .card-container .card {
     list-style-type: none;
     padding: 25px;

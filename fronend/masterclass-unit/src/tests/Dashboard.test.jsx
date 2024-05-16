@@ -48,7 +48,7 @@ describe('Dashboard', () => {
         fireEvent.change(eventAge, { target: { value: 'eventAgeTest' } });
         fireEvent.change(eventStart, { target: { value: '1950-01-01T00:00' } });
         fireEvent.change(eventEnd, { target: { value: '1959-01-01T00:00' } });
-        fireEvent.change(eventCategory, { target: { value: 'eventCategoryTest' } });
+        fireEvent.change(eventCategory, { target: { value: '1' } });
 
         await waitFor(() => {
             expect(eventDescription).toHaveValue('eventDescriptionTest');
@@ -56,7 +56,7 @@ describe('Dashboard', () => {
             expect(eventAge).toHaveValue('eventAgeTest');
             expect(eventStart).toHaveValue('1950-01-01T00:00');
             expect(eventEnd).toHaveValue('1959-01-01T00:00');
-            expect(eventCategory).toHaveValue('eventCategoryTest');
+            expect(screen.getByTestId('eventCategory')).toHaveValue('1');
         });
 
 

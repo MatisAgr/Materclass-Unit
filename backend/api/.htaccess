@@ -38,3 +38,4 @@ RewriteRule ^user/logout$ user/logout.php
 RewriteRule ^user/user$ user/user.php
 
 RewriteRule ^invoice/create$ invoice/create.php
+

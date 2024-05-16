@@ -25,8 +25,8 @@ export default function RegisterPage() {
       setErrorMessage('Passwords do not match.');
       return;
     }
-    // console.log(userUsername, userMail, userPassword, confirmPassword, userBirth)
     try {
+      // Créer un nouvel objet Formulaire pour envoyer le bon format de données au Php
       const formData = new FormData();
       formData.append('userUsername', userUsername);
       formData.append('userMail', userMail);
@@ -38,6 +38,7 @@ export default function RegisterPage() {
         body: formData
       });
 
+      // Récupérer les données de la réponse
       const data = await response.json();
 
       if (response.ok) {
@@ -45,12 +46,10 @@ export default function RegisterPage() {
         console.log('User registered:', data);
         Navigate('/login');
       } else {
-        // Afficher le message d'erreur de l'API
         setErrorMessage(data.message);
       }
     } catch (error) {
-      // Gérer les erreurs lors de l'envoi de la requête
-      console.error('Error registering user:', error);
+      // console.error('Error registering useressaye :', error);
       setErrorMessage('An error occurred while registering. Please try again later.');
     }
   };
@@ -101,6 +100,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-
-

@@ -4,6 +4,7 @@ namespace Masterticket;
 use Masterticket\Database;
 use PDO;
 
+
 class Events {
     protected $db;
     public function __construct()
@@ -13,6 +14,16 @@ class Events {
     }
 
     public function createEvent($event_desc, $event_start, $event_end, $event_slots, $event_ageneed, $event_category_id){
+        if (empty($event_desc) || empty($event_start) || empty($event_end) || empty($event_slots) || empty($event_ageneed) || empty($event_category_id)) {
+            throw new \Exception('All fields are required');
+        }
+
+        $date_start = \DateTime::createFromFormat('Y-m-d H:i:s', $event_start);
+        $date_end = \DateTime::createFromFormat('Y-m-d H:i:s', $event_end);
+        if ($date_start && $date_end && $date_start->format('Y-m-d H:i:s') !== $event_start && $date_end->format('Y-m-d H:i:s') !== $event_end){
+            throw new \Exception('Invalid event date');
+        }
+        
         $sql = "INSERT INTO `events`(`event_desc`, `event_start`, `event_end`, `event_slots`, `event_ageneed`, `event_category_id`) 
 
         VALUES (:col1, :col2, :col3, :col4, :col5, :col6)";
@@ -62,7 +73,7 @@ class Events {
     }
 
     public function deleteEvent($event_id){
-        $sql = "DELETE FROM `events` WHERE `event_id` = $event_id";
+        $sql = "DELETE FROM `events` WHERE `event_id` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
         $query->execute();

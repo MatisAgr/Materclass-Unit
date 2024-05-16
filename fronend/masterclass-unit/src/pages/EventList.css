@@ -86,3 +86,8 @@ body.active-modal {
 .modal-content > form > button:hover{
     background-color: rgb(130, 50, 221);
 }
+
+.modal-content > form > button:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+}

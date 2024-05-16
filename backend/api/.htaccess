@@ -20,20 +20,22 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # RewriteRule ^products/([0-9]+)$ products.php?IdProduct=$1
 # RewriteRule ^products products.php
 
-RewriteRule ^event/list$ event/list.php 
-RewriteRule ^event/event$ event/event.php 
-RewriteRule ^event/create$ event/create.php 
-RewriteRule ^event/update$ event/update.php 
-RewriteRule ^event/cancel$ event/cancel.php 
+RewriteRule ^event/list$ event/list.php
+RewriteRule ^event/event$ event/event.php
+RewriteRule ^event/create$ event/create.php
+RewriteRule ^event/update$ event/update.php
+RewriteRule ^event/cancel$ event/cancel.php
 
-RewriteRule ^category/list$ category/list.php 
-RewriteRule ^category/category$ category/category.php 
-RewriteRule ^category/create$ category/create.php 
+RewriteRule ^category/list$ category/list.php
+RewriteRule ^category/category$ category/category.php
+RewriteRule ^category/create$ category/create.php
 
-RewriteRule ^category/update$ category/update.php 
+RewriteRule ^category/update$ category/update.php
 
-RewriteRule ^user/login$ user/login.php 
-RewriteRule ^user/signin$ user/signin.php 
-RewriteRule ^user/logout$ user/logout.php 
-RewriteRule ^user/user$ user/user.php 
-RewriteRule ^user/reservate$ user/reservate.php 
+RewriteRule ^user/login$ user/login.php
+RewriteRule ^user/signin$ user/signin.php
+RewriteRule ^user/logout$ user/logout.php
+RewriteRule ^user/user$ user/user.php
+
+RewriteRule ^invoice/create$ invoice/create.php
+

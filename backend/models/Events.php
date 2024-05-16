@@ -77,7 +77,6 @@ class Events {
     }
 
 
-
     public function cancelEvent($event_id, $cancel_reason) {
             $sql = "INSERT INTO `cancel` (`cancel_event_id`, `cancel_reason`) VALUES (:col1, :col2)";
             $query = $this->db->prepare($sql);

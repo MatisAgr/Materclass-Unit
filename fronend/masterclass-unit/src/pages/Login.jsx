@@ -12,7 +12,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userMail === '' && userPassword === '') {
+    if (userMail === '' || userPassword === '') {
       setDisabled(true);
     } else {
       setDisabled(false);

@@ -12,37 +12,18 @@ import Logout from './Components/Logout';
 
 function App() {
   return (
-    <Router>
+    <>
+    <Header />
       <Routes>
-        <Route path="/" element={<>
-          <Header />
-          <Events />
-          <Footer />
-          </>} />
-        <Route path="/login" element={
-          <>
-          <Header />
-          <LoginPage />
-          <Footer />
-          </>} />
-        <Route path="/register" element={<>
-          <Header />
-          <RegisterPage />
-          <Footer />
-          </>} />
-        <Route path="/dashboard" element={<>
-          <Header />
-          <Dashboard />
-          <Footer />
-          </>} />
-        <Route path="/profile" element={<>
-          <Header />
-          <ProfilePage />
-          <Footer />
-          </>} />
+        <Route path="/" element={<Events />} />
+        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/logout" element={<Logout/>} />
       </Routes>
-    </Router>
+    <Footer />
+    </>
   );
 }
 

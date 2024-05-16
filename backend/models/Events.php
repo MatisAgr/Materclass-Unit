@@ -120,4 +120,12 @@ class Events {
         $query->bindValue(':col2', $cancel_reason, PDO::PARAM_STR);
         $query->execute();
     }
+
+    public function getAllCancelations(){
+        $sql = "SELECT * FROM `cancel`";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+        return $result = $query->fetchAll();
+    }
+    
 }

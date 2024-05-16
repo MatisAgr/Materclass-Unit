@@ -23,7 +23,7 @@ export default function Dashboard() {
     });
     const [cancelledEvent, setCancelledEvent] = useState(null);
     const [cancellationReason, setCancellationReason] = useState('');
-
+    const [cancellations, setCancellations] = useState([]);
     useEffect(() => {
         const role = localStorage.getItem('userRole');
         // console.log(role)
@@ -32,7 +32,19 @@ export default function Dashboard() {
         }
         fetchEvents();
         fetchCategories();
+        fetchCancellations();
     }, []);
+
+    const fetchCancellations = async () => {
+        try {
+            const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/createCancel');
+            const dataCncl = await response.json();
+            setCancellations(dataCncl.Cancelations);
+            // console.log(dataList.Events);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des cancellations:', error);
+        }
+    };
 
     const fetchEvents = async () => {
         try {
@@ -57,6 +69,7 @@ export default function Dashboard() {
 
     const handleAddEvent = async () => {
         try {
+            const category = dataCate.find(cat => cat.CategoryName === newEvent.CategoryId);
             // Créer un nouvel objet Formulaire pour envoyer le bon format de données au Php
             const formData = new FormData();
             formData.append('EventDescription', newEvent.EventDescription);
@@ -64,8 +77,8 @@ export default function Dashboard() {
             formData.append('EventEnd', newEvent.EventEnd);
             formData.append('EventSlots', newEvent.EventSlots);
             formData.append('EventAgeneed', newEvent.EventAgeneed);
-            formData.append('CategoryId', newEvent.CategoryId);
-    
+            formData.append('CategoryId', category.idCategory);
+            console.log(category)
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
                 body: formData,
@@ -205,19 +218,24 @@ export default function Dashboard() {
                     )}
                     <h3 data-testid="events">Événements</h3>
                     <ul className="card-container">
-                        {dataList.map((event) => (
-                            <li key={event.IdEvent} className={`card ${event.isCancelled ? 'cancelled' : ''}`}>
+                        {dataList.map((event) => {
+                            const category = dataCate.find(cat => cat.idCategory === event.EventCategoryId);
+                            const cancellation = cancellations.find(cancel => cancel.cancel_event_id === event.IdEvent);
+                            return(
+                            <li key={event.IdEvent} className={`card ${cancellation ? 'cancelled' : ''}`}>
                                 <p>{event.EventDescription}</p>
                                 <p>Places disponibles : {event.EventSlots}</p>
                                 <p>Âge requis : {event.EventAgeneed}</p>
-                                <p>Catégorie : {event.EventCategoryId}</p>
+                                {category && <p>Catégorie : {category.CategoryName}</p>}
                                 <p>Début : {new Date(event.EventStart).toLocaleString()}</p>
                                 <p>Fin : {new Date(event.EventEnd).toLocaleString()}</p>
-                                <button onClick={() => handleCancelEvent(event)}>
-                                    Annuler
-                                </button>
+                                {cancellation ? (
+                                    <p>Evenement Annulée : {cancellation.cancel_reason}</p>
+                                ) : (
+                                    <button onClick={() => handleCancelEvent(event)}>Annuler</button>
+                                )}
                             </li>
-                        ))}
+                        )})}
                     </ul>
                 </section>
             </div>

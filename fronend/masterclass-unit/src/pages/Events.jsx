@@ -8,6 +8,7 @@ const EventList = () => {
     const [confirmAge, setConfirmAge] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [cancellations, setCancellations] = useState([]);
     const userId = localStorage.getItem('userId');
 
     const toggleTicketModal = (event) => {
@@ -85,40 +86,50 @@ const EventList = () => {
   useEffect(() => {
     Promise.all([
         fetch('http://localhost/Materclass-Unit/backend/api/event/list').then(response => response.json()),
-        fetch('http://localhost/Materclass-Unit/backend/api/category/list').then(response => response.json())
+        fetch('http://localhost/Materclass-Unit/backend/api/category/list').then(response => response.json()),
+        fetch('http://localhost/Materclass-Unit/backend/api/event/createCancel').then(response => response.json())
     ])
-    .then(([eventData, categoryData]) => {
+    .then(([eventData, categoryData, cancelationData]) => {
         setEvents(eventData.Events);
         setCategories(categoryData.Categories);
+        setCancellations(cancelationData.Cancelations);
     })
     .catch(error => console.error('Error fetching events and categories:', error));
 }, []);
 
-    
+    console.log(cancellations)
     
     return (
         <>
             <div className="event-list">
                 <h2 data-testid="event-page-title">Upcoming Events</h2>
                 <ul>
-                  {events.map(event => {
+                    {events.map(event => {
                         // Find the category object corresponding to the event's category ID
                         const category = categories.find(cat => cat.idCategory === event.EventCategoryId);
-                        
+                        const cancellation = cancellations.find(cancel => cancel.cancel_event_id === event.IdEvent); // Check if event is canceled
+
                         return (
                             <li key={event.IdEvent} className='event-cards'>
                                 <h3 data-testid="event-desc">{event.EventDescription}</h3>
-                                <p data-testid="event-start-date">Start Date : {event.EventStart}</p>
-                                <p data-testid="event-end-date">End Date : {event.EventEnd}</p>
-                                <p data-testid="event-slots">Slots : {event.EventSlots}</p>
-                                <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
+                                <p data-testid="event-start-date">Début : {event.EventStart}</p>
+                                <p data-testid="event-end-date">Fin : {event.EventEnd}</p>
+                                <p data-testid="event-slots">Places disponibles : {event.EventSlots}</p>
+                                <p data-testid="event-min-age">Âge requis : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
                                 {/* Display the category name if category is found */}
-                                {category && <p data-testid="event-cat">Category : {category.CategoryName}</p>}
-                                {event.EventSlots!= 0 && userId && <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>}
+                                {category && <p data-testid="event-cat">Catégorie : {category.CategoryName}</p>}
+                                {cancellation ? (
+                                    <p data-testid="event-canceled">Evenement Annulée : {cancellation.cancel_reason}</p>
+                                ) : (
+                                    <>
+                                        {event.EventSlots !== 0 && userId && (
+                                            <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
+                                        )}
+                                    </>
+                                )}
                             </li>
                         );
                     })}
-
                 </ul>
             </div>
             {ticketModal && (

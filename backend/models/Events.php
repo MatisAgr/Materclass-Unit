@@ -70,7 +70,7 @@ class Events {
     }
 
     public function deleteEvent($event_id){
-        $sql = "DELETE FROM `events` WHERE `event_id` = $event_id";
+        $sql = "DELETE FROM `events` WHERE `event_id` = :col1";
         $query = $this->db->prepare($sql);
         $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
         $query->execute();

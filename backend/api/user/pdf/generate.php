@@ -2,8 +2,14 @@
 require '../../../vendor/autoload.php';
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
+use BaconQrCode\Writer;
+use BaconQrCode\Renderer\GDLibRenderer;
 
-$dompdf = new Dompdf();
+$options = new Options();
+$options->set('chroot', realpath(''));
+$dompdf = new Dompdf($options);
+
 $desc = $_GET['desc'];
 $username = $_GET['username'];
 $email = $_GET['email'];
@@ -11,7 +17,14 @@ $slots = $_GET['slots'];
 $date = $_GET['date'];
 $ageneed = $_GET['ageneed'];
 
-$dompdf->loadHtml("<!DOCTYPE html>
+$renderer = new GDLibRenderer(200);
+$writer = new Writer($renderer);
+
+// le qrcode se génère lorsque l'api user/user est appélée
+$filename = 'qrcode/qrcode.png';
+$writer->writeFile("Masterticket : Le ticket est valide \nClient : $username", $filename);
+
+$html = "<!DOCTYPE html>
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
@@ -65,6 +78,7 @@ $dompdf->loadHtml("<!DOCTYPE html>
 
     .invoice .total {
       margin-top: 20px;
+      margin-right : 40px;
       text-align: right;
     }
   </style>
@@ -73,7 +87,7 @@ $dompdf->loadHtml("<!DOCTYPE html>
 
 <div class='container'>
   <div class='invoice'>
-    <h1>Facture</h1>
+    <h1>Facture de confirmation</h1>
     <div class='info'>
       <p><strong>Client: $username</strong></p>
       <p><strong>Adresse:</strong> 25 Rue Claude Tillier, 75012 Paris</p>
@@ -100,13 +114,17 @@ $dompdf->loadHtml("<!DOCTYPE html>
     <div class='total'>
       <p><strong>Total à payer:</strong> gratuit</p>
     </div>
+    <div>
+      <img src=$filename alt='qrcode'>
+      <p>Le scan est obligatoire avant d'entrée</p>
+    </div>
   </div>
 </div>
-
 </body>
-</html>");
+</html>";
 
+$dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');
-
 $dompdf->render();
-$dompdf->stream();
+$dompdf->stream("NEXAMPLE", array("Attachment" => false));
+

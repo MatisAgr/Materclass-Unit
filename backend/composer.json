@@ -9,6 +9,10 @@
     },
     "require": {
         "vlucas/phpdotenv": "^5.6",
-        "dompdf/dompdf": "^3.0"
+        "dompdf/dompdf": "^3.0",
+        "bacon/bacon-qr-code": "^3.0",
+        "calcinai/php-imagick": "^0.1.2",
+        "masterminds/html5": "^2.9",
+        "dompdf/php-svg-lib": "^1.0"
     }
 }

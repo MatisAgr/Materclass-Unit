@@ -1,7 +1,9 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import RegisterPage from '../pages/Register';
+import fetchMock from 'jest-fetch-mock';
 import '@testing-library/jest-dom/extend-expect';
+fetchMock.enableMocks();
 
 describe('Register', () => {
     let registerForm, usernameInput, emailInput, passwordInput, confirmPasswordInput, birthDateInput, submitButton, errorMessage, loginLink;
@@ -19,7 +21,7 @@ describe('Register', () => {
         passwordInput = screen.getByTestId('password-input');
         confirmPasswordInput = screen.getByTestId('password-input-check');
         birthDateInput = screen.getByTestId('birth-input');
-        submitButton = screen.getByTestId('sumbit-register-button');
+        submitButton = screen.getByTestId('submit-register-button');
         errorMessage = screen.getByTestId('error-message');
         loginLink = screen.getByTestId('login-link');
     });
@@ -169,5 +171,50 @@ describe('Register', () => {
         });
 
     });
+
+    /******************* Test for fetch *****************/
+
+    test('should register a new user and find it in the database', async () => {
+        const randomUser = {
+            username: 'User' + Math.floor(Math.random() * 1000),
+            email: 'user' + Math.floor(Math.random() * 1000) + '@test.com',
+            password: 'Password' + Math.floor(Math.random() * 1000),
+            birthDate: new Date().toISOString().split('T')[0]
+        };
+
+        // Simulate the registration process
+        fireEvent.change(usernameInput, { target: { value: randomUser.username } });
+        fireEvent.change(emailInput, { target: { value: randomUser.email } });
+        fireEvent.change(passwordInput, { target: { value: randomUser.password } });
+        fireEvent.change(confirmPasswordInput, { target: { value: randomUser.password } });
+        fireEvent.change(birthDateInput, { target: { value: randomUser.birthDate }});
+
+        await waitFor(() => {
+            expect(usernameInput.value).toBe(randomUser.username);
+            expect(emailInput.value).toBe(randomUser.email);
+            expect(passwordInput.value).toBe(randomUser.password);
+            expect(confirmPasswordInput.value).toBe(randomUser.password);
+            expect(birthDateInput.value).toBe(randomUser.birthDate);
+            expect(submitButton).not.toBeDisabled();
+        });
+
+        fetchMock.mockResponseOnce(JSON.stringify({ message: 'User registered' }));
+
+        await new Promise(resolve => setTimeout(resolve, 0));   
+
+        expect(fetch).toHaveBeenCalledWith('http://localhost/Materclass-Unit/backend/api/user/signin', expect.objectContaining({
+            method: 'POST',
+            body: expect.any(FormData) 
+        }));
+    
+        // Check the fetch response
+        const response = fetch.mock.results[0].value;
+        expect(response.status).toBe(200);
+        const responseBody = await response.json();
+        expect(responseBody).toEqual({ message: 'User registered' });
+    
+    });
+
+    
 
 });

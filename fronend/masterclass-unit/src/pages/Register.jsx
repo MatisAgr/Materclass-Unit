@@ -66,26 +66,26 @@ export default function RegisterPage() {
   return (
     <div className="formContainer">
       <h1>Register</h1>
-      <form data-testid="login-form" id="formStyle" onSubmit={handleRegister} className="form">
+      <form data-testid="register-form" id="formStyle" onSubmit={handleRegister} className="form">
 
         <label>
           Username:
-          <input data-testid="userUsername-input" type="text" value={userUsername} onChange={e => setUserUsername(e.target.value)} />
+          <input data-testid="username-input" type="text" value={userUsername} onChange={e => setUserUsername(e.target.value)} />
         </label>
 
         <label>
           Email:
-          <input data-testid="userMail-input" type="email" value={userMail} onChange={e => setUserMail(e.target.value)} />
+          <input data-testid="email-input" type="email" value={userMail} onChange={e => setUserMail(e.target.value)} />
         </label>
 
         <label>
           Password:
-          <input data-testid="userPassword-input" type="password" value={userPassword} onChange={e => setUserPassword(e.target.value)} />
+          <input data-testid="password-input" type="password" value={userPassword} onChange={e => setUserPassword(e.target.value)} />
         </label>
 
         <label>
           Confirm Password:
-          <input data-testid="userPassword-input-check" type="password" onChange={e => setConfirmPassword(e.target.value)} />
+          <input data-testid="password-input-check" type="password" onChange={e => setConfirmPassword(e.target.value)} />
         </label>
 
         <label>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
           <input data-testid="birth-input" type="date" max={today} onChange={e => setUserBirth(e.target.value)} />
         </label>
 
-        <button className='formbutton' data-testid="sumbit-register-button" type="submit" disabled={disabled}>Register</button>
+        <button className='formbutton' data-testid="submit-register-button" type="submit" disabled={disabled}>Register</button>
         <p data-testid="error-message">{errorMessage}</p>
         <Link data-testid="login-link" to="/login">Login</Link>
 

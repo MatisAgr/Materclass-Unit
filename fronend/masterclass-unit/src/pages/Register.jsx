@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Form.css';
 
 export default function RegisterPage() {
+  const Navigate = useNavigate();
+  const today = new Date().toISOString().split("T")[0];
   const [userUsername, setUserUsername] = useState('');
   const [userMail, setUserMail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -10,12 +12,6 @@ export default function RegisterPage() {
   const [userBirth, setUserBirth] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [newUser, setNewUser] = useState({
-    userUsername: '',
-    userMail: '',
-    userPassword: '',
-    userBirth: ''
-  });
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -32,10 +28,10 @@ export default function RegisterPage() {
     // console.log(userUsername, userMail, userPassword, confirmPassword, userBirth)
     try {
       const formData = new FormData();
-        formData.append('userUsername', userUsername);
-        formData.append('userMail', userMail);
-        formData.append('userPassword', userPassword);
-        formData.append('userBirth', userBirth);
+      formData.append('userUsername', userUsername);
+      formData.append('userMail', userMail);
+      formData.append('userPassword', userPassword);
+      formData.append('userBirth', userBirth);
 
       const response = await fetch('http://localhost/Materclass-Unit/backend/api/user/signin', {
         method: 'POST',
@@ -47,6 +43,7 @@ export default function RegisterPage() {
       if (response.ok) {
         // Enregistrement réussi, rediriger l'utilisateur vers la page de connexion
         console.log('User registered:', data);
+        Navigate('/login');
       } else {
         // Afficher le message d'erreur de l'API
         setErrorMessage(data.message);
@@ -73,27 +70,27 @@ export default function RegisterPage() {
 
         <label>
           Username:
-          <input data-testid="userUsername-input" type="text" value={userUsername} onChange={e => setUserUsername(e.target.value)}  />
+          <input data-testid="userUsername-input" type="text" value={userUsername} onChange={e => setUserUsername(e.target.value)} />
         </label>
 
         <label>
           Email:
-          <input data-testid="userMail-input" type="userMail" value={userMail} onChange={e => setUserMail(e.target.value)}  />
+          <input data-testid="userMail-input" type="email" value={userMail} onChange={e => setUserMail(e.target.value)} />
         </label>
 
         <label>
           Password:
-          <input data-testid="userPassword-input" type="userPassword" value={userPassword} onChange={e => setUserPassword(e.target.value)}  />
+          <input data-testid="userPassword-input" type="password" value={userPassword} onChange={e => setUserPassword(e.target.value)} />
         </label>
 
         <label>
           Confirm Password:
-          <input data-testid="userPassword-input-check" type="userPassword"  onChange={e => setConfirmPassword(e.target.value)}  />
+          <input data-testid="userPassword-input-check" type="password" onChange={e => setConfirmPassword(e.target.value)} />
         </label>
 
         <label>
           Birth Date:
-          <input data-testid="birth-input" type="date" onChange={e => setUserBirth(e.target.value)}  />
+          <input data-testid="birth-input" type="date" max={today} onChange={e => setUserBirth(e.target.value)} />
         </label>
 
         <button className='formbutton' data-testid="sumbit-register-button" type="submit" disabled={disabled}>Register</button>

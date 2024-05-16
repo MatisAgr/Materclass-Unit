@@ -23,10 +23,10 @@ const EventList = () => {
     }
     const handleSubmit = (e) => {
       e.preventDefault();
-      if (!selectedEvent) return; // Ensure selectedEvent is not null
+      if (!selectedEvent) return; 
       const formData = new FormData();
       formData.append('idEvent', selectedEvent.IdEvent);
-      formData.append('idUser', 1); // Assuming user ID is 1, update accordingly
+      formData.append('idUser', localStorage.getItem('userId')); 
       
       fetch('http://localhost/Materclass-Unit/backend/api/invoice/create', {
           method: 'POST',
@@ -83,7 +83,7 @@ const EventList = () => {
                                 <p data-testid="event-slots">Slots : {event.EventSlots}</p>
                                 <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
                                 {/* Display the category name if category is found */}
-                                <p data-testid="event-cat">Category : {category.CategoryName}</p>
+                                {category && <p data-testid="event-cat">Category : {category.CategoryName}</p>}
                                 <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>
                             </li>
                         );
@@ -105,7 +105,7 @@ const EventList = () => {
                                     <label>Confirm all attendees are above the minimum age</label>
                                 </div>
                             }
-                            <button type="submit">Submit</button>
+                            <button type="submit" disabled={selectedEvent && selectedEvent.EventAgeneed > 0 && numAttendees > 1 && !confirmAge}>Buy</button>
                         </form>
                     </div>
                 </div>

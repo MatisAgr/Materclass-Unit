@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cancel` (
-  `cancel_id` int(1) NOT NULL,
-  `cancel_event_id` int(1) NOT NULL,
+  `cancel_id` int(11) NOT NULL,
+  `cancel_event_id` int(11) NOT NULL,
   `cancel_invoice_id` varchar(36) NOT NULL,
   `cancel_reason` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

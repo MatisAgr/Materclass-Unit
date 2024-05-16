@@ -4,7 +4,7 @@ import RegisterPage from '../pages/Register';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Register', () => {
-    let usernameInput, emailInput, passwordInput, confirmPasswordInput, birthDateInput, submitButton, errorMessage, loginLink;
+    let registerForm, usernameInput, emailInput, passwordInput, confirmPasswordInput, birthDateInput, submitButton, errorMessage, loginLink;
 
     /****Prepare ****/
     beforeEach(() => {
@@ -13,6 +13,7 @@ describe('Register', () => {
                 <RegisterPage />
             </MemoryRouter>
         );
+        registerForm = screen.getByTestId('register-form');
         usernameInput = screen.getByTestId('username-input');
         emailInput = screen.getByTestId('email-input');
         passwordInput = screen.getByTestId('password-input');
@@ -26,7 +27,6 @@ describe('Register', () => {
 
     /***************** Test for rendering of register page *****************/
     test('renders register page', () => {
-        const registerForm = screen.getByTestId('login-form');
         expect(registerForm).toBeInTheDocument();
         expect(usernameInput).toBeInTheDocument();
         expect(emailInput).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('Register', () => {
             expect(birthDateInput.value).toBe('2021-01-01');
             expect(submitButton).toBeDisabled();
         });
-        
+
     });
 
     test('should display error message when email is empty', async () => {
@@ -169,6 +169,5 @@ describe('Register', () => {
         });
 
     });
-    
 
 });

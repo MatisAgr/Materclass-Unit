@@ -27,7 +27,20 @@ const EventList = () => {
       const formData = new FormData();
       formData.append('idEvent', selectedEvent.IdEvent);
       formData.append('idUser', localStorage.getItem('userId')); 
-      
+
+      const updatedSlots = selectedEvent.EventSlots - numAttendees;
+      const formData1 = new FormData();
+      console.log(selectedEvent)
+
+      formData1.append('IdEvent', selectedEvent.IdEvent);
+      formData1.append('EventDescription', selectedEvent.EventDescription);
+      formData1.append('EventStart', selectedEvent.EventStart);
+      formData1.append('EventEnd', selectedEvent.EventEnd);
+      formData1.append('EventSlots', updatedSlots);
+      formData1.append('EventAgeneed', selectedEvent.EventAgeneed);
+      formData1.append('CategoryId', selectedEvent.EventCategoryId);
+      console.log(formData1)
+
       fetch('http://localhost/Materclass-Unit/backend/api/invoice/create', {
           method: 'POST',
           body: formData
@@ -39,33 +52,50 @@ const EventList = () => {
           return response.json();
       })
       .then(data => {
-          console.log('Invoice created:', data);
-          // Reset form and close modal
-          setNumAttendees(1);
-          setConfirmAge(false);
-          toggleTicketModal(null);
-      })
-      .catch(error => {
-          console.error('Error creating invoice:', error);
-          // Handle error here, maybe display an error message to the user
-      });
-  }
+        console.log('Invoice created:', data);
+       
+        fetch(`http://localhost/Materclass-Unit/backend/api/event/update`, {
+            method: 'POST',
+            body: formData1
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200) {
+                console.log('Event updated successfully:', data.message);
+                // Reset form and close modal
+                setNumAttendees(1);
+                setConfirmAge(false);
+                toggleTicketModal(null);
+            } else {
+                console.error('Error updating event:', data.message);
+                // Handle error here, maybe display an error message to the user
+            }
+        })
+        .catch(error => {
+            console.error('Error updating event:', error);
+            // Handle error here, maybe display an error message to the user
+        });
+    })
+    .catch(error => {
+        console.error('Error creating invoice:', error);
+        // Handle error here, maybe display an error message to the user
+    });
+}
 
-    useEffect(() => {
-        fetch('http://localhost/Materclass-Unit/backend/api/event/list')
-            .then(response => response.json())
-            .then(data => setEvents(data.Events))
-            .catch(error => console.error('Error fetching events:', error));
-    }, []);
+  useEffect(() => {
+    Promise.all([
+        fetch('http://localhost/Materclass-Unit/backend/api/event/list').then(response => response.json()),
+        fetch('http://localhost/Materclass-Unit/backend/api/category/list').then(response => response.json())
+    ])
+    .then(([eventData, categoryData]) => {
+        setEvents(eventData.Events);
+        setCategories(categoryData.Categories);
+    })
+    .catch(error => console.error('Error fetching events and categories:', error));
+}, []);
 
-    useEffect(() => {
-      fetch('http://localhost/Materclass-Unit/backend/api/category/list')
-          .then(response => response.json())
-          .then(data => setCategories(data.Categories))
-          .catch(error => console.error('Error fetching events:', error));
-  }, []);
     
-
+    
     return (
         <>
             <div className="event-list">
@@ -73,10 +103,10 @@ const EventList = () => {
                 <ul>
                   {events.map(event => {
                         // Find the category object corresponding to the event's category ID
-                        const category = categories.find(cat => cat.IdCategory === event.category);
+                        const category = categories.find(cat => cat.idCategory === event.EventCategoryId);
                         
                         return (
-                            <li key={event.IdEvent} className='event-card'>
+                            <li key={event.IdEvent} className='event-cards'>
                                 <h3 data-testid="event-desc">{event.EventDescription}</h3>
                                 <p data-testid="event-start-date">Start Date : {event.EventStart}</p>
                                 <p data-testid="event-end-date">End Date : {event.EventEnd}</p>
@@ -84,7 +114,7 @@ const EventList = () => {
                                 <p data-testid="event-min-age">Age Requirement : {event.EventAgeneed > 0 ? event.EventAgeneed : "All ages Welcome"}</p>
                                 {/* Display the category name if category is found */}
                                 {category && <p data-testid="event-cat">Category : {category.CategoryName}</p>}
-                                {userId && <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>}
+                                {event.EventSlots!= 0 && userId && <button data-testid="event-ticket-button" onClick={() => toggleTicketModal(event)}>Buy Tickets</button>}
                             </li>
                         );
                     })}

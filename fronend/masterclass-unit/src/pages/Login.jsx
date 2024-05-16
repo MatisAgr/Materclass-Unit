@@ -49,9 +49,9 @@ export default function LoginPage() {
 
   return (
     <div>
-      <section>
+      <section className='formContainer'>
         <h1>Login</h1>
-        <form id="formStyle" data-testid="login-form" onSubmit={handleLogin}>
+        <form id="formStyle" data-testid="login-form" onSubmit={handleLogin} className='form-login'>
           <label>
             Email:
             <input data-testid="userMail-input" type="text" value={userMail} onChange={e => setMail(e.target.value)} />

@@ -160,6 +160,7 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
                     />
                     <input
+                        data-testid="eventSlots"
                         type="number"
                         placeholder="Nombre de places"
                         value={newEvent.EventSlots}
@@ -173,12 +174,14 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
                     />
                     <input
+                        data-testid="eventStart"
                         type="datetime-local"
                         placeholder="Début de l'événement"
                         value={newEvent.EventStart}
                         onChange={(e) => setNewEvent({ ...newEvent, EventStart: e.target.value })}
                     />
                     <input
+                        data-testid="eventEnd"
                         type="datetime-local"
                         placeholder="Fin de l'événement"
                         value={newEvent.EventEnd}

@@ -6,6 +6,7 @@ require_once '../../vendor/autoload.php';
 
 use Masterticket\Users;
 use Masterticket\Events;
+use Masterticket\Invoices;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -31,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // get all events for this user
             $events = new Events();
-            $userEventDatas = $users->getAllEventsForUser($idUser);
+            $invoices = new Invoices();
+            $userEventDatas = $invoices->getAllEventsForUser($idUser);
             foreach($userEventDatas as $userEventData){
-                $idEvent = $userEventData['event_id'];
+                $idEvent = $userEventData['invoice_event_id'];
                 $eventData = $events->getEventById($idEvent);
 
                 $eventDescription = $eventData['event_desc'];
@@ -42,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $eventCategoryId = $eventData['event_category_id'];
                 $eventStart = $eventData['event_start'];
                 $eventEnd = $eventData['event_end'];
+                $long = "desc=$eventDescription&username=$userUsername&email=$userEmail&slots=$eventSlots&date=$eventStart&ageneed=$eventAgeneed";
+                $filename = "http://localhost/masterclass/Materclass-Unit/backend/api/user/pdf/generate.php?$long";
 
                  $jsonData['Events'][] = [
                     'IdEvent' => $idEvent,
@@ -50,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     'EventAgeneed' => $eventAgeneed,
                     'EventCategoryId' => $eventCategoryId,
                     'EventStart' => $eventStart,
-                    'EventEnd' => $eventEnd
+                    'EventEnd' => $eventEnd,
+                    'Invoice' => $filename
                 ];
             }
             

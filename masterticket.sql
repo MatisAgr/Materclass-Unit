@@ -17,15 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données : `masterticket`
---
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cancel`
---
 DROP DATABASE IF EXISTS masterticket;
 
 CREATE DATABASE masterticket;
@@ -72,11 +63,9 @@ CREATE TABLE `invoices` (
 CREATE TABLE `cancel` (
   `cancel_id` int(11) NOT NULL AUTO_INCREMENT UNIQUE,
   `cancel_event_id` int(11) NOT NULL,
-  `cancel_invoice_id` varchar(36) NOT NULL,
   `cancel_reason` varchar(255) NOT NULL,
   PRIMARY KEY (`cancel_id`),
-  FOREIGN KEY (`cancel_event_id`) REFERENCES `events` (`event_id`),
-  FOREIGN KEY (`cancel_invoice_id`) REFERENCES `invoices` (`invoice_id`)
+  FOREIGN KEY (`cancel_event_id`) REFERENCES `events` (`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO `users` (`user_id`, `user_username`, `user_mail`, `user_passwd`, `user_birth`, `user_role`) VALUES
@@ -97,11 +86,10 @@ INSERT INTO `invoices` (`invoice_user_id`, `invoice_event_id`, `invoice_date`) V
 (1, 2, '2024-05-14 12:00:00'),
 (1, 3, '2024-05-14 12:00:00');
 
--- wip --
--- INSERT INTO `cancel` (`cancel_event_id`, `cancel_invoice_id`, `cancel_reason`) VALUES
--- (1, '1', 'Raison 1'),
--- (2, '2', 'Raison 2'),
--- (3, '3', 'Raison 3');
+INSERT INTO `cancel` (`cancel_event_id`, `cancel_reason`) VALUES
+(1, 'Raison 1'),
+(2, 'Raison 2'),
+(3, 'Raison 3');
 
 COMMIT;
 

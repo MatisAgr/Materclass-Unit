@@ -1,32 +1,61 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link, useNavigate } from 'react-router-dom';
 import './Form.css';
-import { Link } from 'react-router-dom';
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const Navigate = useNavigate();
+  const today = new Date().toISOString().split("T")[0];
+  const [userUsername, setUserUsername] = useState('');
+  const [userMail, setUserMail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [userBirth, setUserBirth] = useState('');
   const [disabled, setDisabled] = useState(true);
-
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRegister = event => {
+  const handleRegister = async (event) => {
     event.preventDefault();
 
-    if (username === '' || email === '' || password === '' || confirmPassword === '' || birthDate === '') {
+    if (userUsername === '' || userMail === '' || userPassword === '' || confirmPassword === '' || userBirth === '') {
       setErrorMessage('All fields are required.');
-    } else if (password !== confirmPassword) {
+      return;
+    }
+
+    if (userPassword !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
-    } else {
-      setErrorMessage('');
+      return;
+    }
+    try {
+      // Créer un nouvel objet Formulaire pour envoyer le bon format de données au Php
+      const formData = new FormData();
+      formData.append('userUsername', userUsername);
+      formData.append('userMail', userMail);
+      formData.append('userPassword', userPassword);
+      formData.append('userBirth', userBirth);
+
+      const response = await fetch('http://localhost/Materclass-Unit/backend/api/user/signin', {
+        method: 'POST',
+        body: formData
+      });
+
+      // Récupérer les données de la réponse
+      const data = await response.json();
+
+      if (response.ok) {
+        // Enregistrement réussi, rediriger l'utilisateur vers la page de connexion
+        console.log('User registered:', data);
+        Navigate('/login');
+      } else {
+        setErrorMessage(data.message);
+      }
+    } catch (error) {
+      // console.error('Error registering useressaye :', error);
+      setErrorMessage('An error occurred while registering. Please try again later.');
     }
   };
 
   useEffect(() => {
-    if (username === '' || email === '' || password === '' || confirmPassword === '' || birthDate === '') {
+    if (userUsername === '' || userMail === '' || userPassword === '' || confirmPassword === '' || userBirth === '') {
       setDisabled(true);
     } else {
       setDisabled(false);
@@ -36,34 +65,34 @@ export default function RegisterPage() {
   return (
     <div className="formContainer">
       <h1>Register</h1>
-      <form data-testid="login-form" id="formStyle" onSubmit={handleRegister} className="form">
+      <form data-testid="register-form" id="formStyle" onSubmit={handleRegister} className="form">
 
         <label>
           Username:
-          <input data-testid="username-input" type="text" value={username} onChange={e => setUsername(e.target.value)}  />
+          <input data-testid="username-input" type="text" value={userUsername} onChange={e => setUserUsername(e.target.value)} />
         </label>
 
         <label>
           Email:
-          <input data-testid="email-input" type="email" value={email} onChange={e => setEmail(e.target.value)}  />
+          <input data-testid="email-input" type="email" value={userMail} onChange={e => setUserMail(e.target.value)} />
         </label>
 
         <label>
           Password:
-          <input data-testid="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)}  />
+          <input data-testid="password-input" type="password" value={userPassword} onChange={e => setUserPassword(e.target.value)} />
         </label>
 
         <label>
           Confirm Password:
-          <input data-testid="password-input-check" type="password"  onChange={e => setConfirmPassword(e.target.value)}  />
+          <input data-testid="password-input-check" type="password" onChange={e => setConfirmPassword(e.target.value)} />
         </label>
 
         <label>
           Birth Date:
-          <input data-testid="birth-input" type="date" onChange={e => setBirthDate(e.target.value)}  />
+          <input data-testid="birth-input" type="date" max={today} onChange={e => setUserBirth(e.target.value)} />
         </label>
 
-        <button className='formbutton' data-testid="sumbit-register-button" type="submit" disabled={disabled}>Register</button>
+        <button className='formbutton' data-testid="submit-register-button" type="submit" disabled={disabled}>Register</button>
         <p data-testid="error-message">{errorMessage}</p>
         <Link data-testid="login-link" to="/login">Login</Link>
 
@@ -71,6 +100,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-
-

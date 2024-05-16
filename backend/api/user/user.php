@@ -6,6 +6,7 @@ require_once '../../vendor/autoload.php';
 
 use Masterticket\Users;
 use Masterticket\Events;
+use Masterticket\Invoices;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -31,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // get all events for this user
             $events = new Events();
-            $userEventDatas = $users->getAllEventsForUser($idUser);
+            $invoices = new Invoices();
+            $userEventDatas = $invoices->getAllEventsForUser($idUser);
             foreach($userEventDatas as $userEventData){
-                $idEvent = $userEventData['event_id'];
+                $idEvent = $userEventData['invoice_event_id'];
                 $eventData = $events->getEventById($idEvent);
 
                 $eventDescription = $eventData['event_desc'];

@@ -1,12 +1,12 @@
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import { useState, useEffect } from 'react';
 
 import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
-    const [errorMessageAdd, setErrorMessageAdd] = useState('');
+    const [MessageAdd, setMessageAdd] = useState('');
     const [events, setEvents] = useState([]);
     const [dataList, setDataList] = useState([]);
     const [dataCate, setDataCate] = useState([]);
@@ -23,6 +23,12 @@ export default function Dashboard() {
     const [cancellationReason, setCancellationReason] = useState('');
 
     useEffect(() => {
+     
+        const role = localStorage.getItem('userRole');
+        console.log(role)
+        if (role != 'admin') {
+            navigate('/login');
+        }
         fetchEvents();
         fetchCategories();
     }, []);
@@ -43,23 +49,26 @@ export default function Dashboard() {
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/category/list');
             const dataCate = await response.json();
             setDataCate(dataCate.Categories);
-            // console.log(dataCate.Categories)
         } catch (error) {
             console.error('Erreur lors de la récupération des catégories:', error);
         }
     };
 
-
     const handleAddEvent = async () => {
         try {
-            console.log(newEvent)
+            const formData = new FormData();
+            formData.append('EventDescription', newEvent.EventDescription);
+            formData.append('EventStart', newEvent.EventStart);
+            formData.append('EventEnd', newEvent.EventEnd);
+            formData.append('EventSlots', newEvent.EventSlots);
+            formData.append('EventAgeneed', newEvent.EventAgeneed);
+            formData.append('CategoryId', newEvent.CategoryId);
+    
             const response = await fetch('http://localhost/Materclass-Unit/backend/api/event/create', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newEvent),
+                body: formData,
             });
+    
             const data = await response.json();
             setEvents([...events, data]);
             setNewEvent({
@@ -70,11 +79,13 @@ export default function Dashboard() {
                 EventStart: '',
                 EventEnd: ''
             });
+            fetchEvents();
+            setMessageAdd('Événement ajouté avec succès');
         } catch (error) {
-            console.error('Erreur lors de l\'ajout de l\'événement:', error);
-            setErrorMessageAdd('Erreur lors de l\'ajout de l\'événement')
+            setMessageAdd('Erreur lors de l\'ajout de l\'événement')
         }
     };
+    
 
     const handleCancelEvent = (event) => {
         setCancelledEvent(event);
@@ -85,7 +96,6 @@ export default function Dashboard() {
             setErrorMessage('Veuillez entrer une raison d\'annulation');
             return;
         } 
-            
         try {
             const response = await fetch(`/api/events/${cancelledEvent.IdEvent}`, {
                 method: 'POST',
@@ -105,7 +115,6 @@ export default function Dashboard() {
 
     return (
         <div>
-            <Header />
             <div className="dashboard">
                 <h2 data-testid="dashboardID">Dashboard</h2>
                 <div className='event-card'>
@@ -157,7 +166,7 @@ export default function Dashboard() {
                         ))}
                         </select>
                     <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
-                    <p data-testid="error-Message-Add">{errorMessageAdd}</p>
+                    <p data-testid="error-Message-Add">{MessageAdd}</p>
                 </div>
                 <section className="cards">
                     {cancelledEvent && (
@@ -192,7 +201,6 @@ export default function Dashboard() {
                     </ul>
                 </section>
             </div>
-            <Footer />
         </div>
     );
 }

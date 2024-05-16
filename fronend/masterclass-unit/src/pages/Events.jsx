@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./EventList.css"
 
-
 const EventList = () => {
     const [events, setEvents] = useState([]);
     const [ticketModal, setTicketModal] = useState(false);

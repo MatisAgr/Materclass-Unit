@@ -54,7 +54,7 @@ export default function LoginPage() {
         <form id="formStyle" data-testid="login-form" onSubmit={handleLogin}>
           <label>
             Email:
-            <input data-testid="userMail-input" type="text" value={userMail} onChange={e => setMail(e.target.value)} />
+            <input data-testid="username-input" type="text" value={userMail} onChange={e => setMail(e.target.value)} />
           </label>
           <label>
             Password:

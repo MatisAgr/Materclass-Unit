@@ -16,7 +16,7 @@ class Users {
     }
 
     private function validateUserId($user_id){
-        if (!is_int($user_id) || $user_id <= 0) {
+        if ($user_id <= 0) {
             throw new Exception('Invalid user ID');
         }
     }

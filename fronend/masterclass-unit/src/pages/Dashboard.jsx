@@ -109,9 +109,6 @@ export default function Dashboard() {
             const formDataCancel = new FormData();
             formDataCancel.append('EventId', cancelledEvent.IdEvent);
             formDataCancel.append('CancelReason', cancellationReason);
-            // console.log(cancelledEvent.IdEvent)
-            // console.log(cancellationReason)
-            // console.log(Array.from(formDataCancel.entries()))
             const response = await fetch(`http://localhost/Materclass-Unit/backend/api/event/cancel`, {
                 method: 'POST',
                 body: formDataCancel,
@@ -129,22 +126,6 @@ export default function Dashboard() {
         }
     };
 
-    /* const handleAddCategory = async () => {
-        try {
-            const response = await fetch('http://localhost/Materclass-Unit/backend/api/category/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ CategoryName: categories }),
-            });
-            const data = await response.json();
-            setCategory([...categories, data]);
-            setCategory('');
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout de la catégorie:', error);
-        }
-    } */
 
     return (
         <div>
@@ -201,14 +182,6 @@ export default function Dashboard() {
                     <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
                     <p data-testid="error-Message-Add">{MessageAdd}</p>
                 </div>
-                {/* <div className='event-card'>
-                        <h3>Ajouter une catégorie</h3>
-                        <input
-                            type="text"
-                            placeholder="Nom de la catégorie"
-                        />
-                        <button onClick={handleAddCategory}>Ajouter</button>
-                </div> */}
                 <section className="cards">
                     {cancelledEvent && (
                         <div className='cancelledEvent'>
@@ -227,7 +200,7 @@ export default function Dashboard() {
                     <h3 data-testid="events">Événements</h3>
                     <ul className="card-container">
                         {dataList.map((event) => (
-                            <li key={event.IdEvent} className="card">
+                            <li key={event.IdEvent} className={`card ${event.isCancelled ? 'cancelled' : ''}`}>
                                 <p>{event.EventDescription}</p>
                                 <p>Places disponibles : {event.EventSlots}</p>
                                 <p>Âge requis : {event.EventAgeneed}</p>

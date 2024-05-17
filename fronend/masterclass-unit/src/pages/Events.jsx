@@ -8,7 +8,9 @@ const EventList = () => {
     const [confirmAge, setConfirmAge] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [categories, setCategories] = useState([]);
+
     const [cancellations, setCancellations] = useState([]);
+
     const userId = localStorage.getItem('userId');
 
     const toggleTicketModal = (event) => {
@@ -124,6 +126,7 @@ const EventList = () => {
                                         )}
                                     </>
                                 )}
+
                             </li>
                         );
                     })}

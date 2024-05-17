@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { useFetchEvents, useFetchCategories } from '../Components/Hooks';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import AddEventForm from '../Components/AddEvent';
@@ -12,7 +11,6 @@ export default function Dashboard() {
     const [events, setEvents] = useState([]);
     const [cancelledEvent, setCancelledEvent] = useState(null);
     const [cancellationReason, setCancellationReason] = useState('');
-    // const [cancel, setCancel] = useState(false);
     
     useEffect(() => {
         const role = localStorage.getItem('userRole');
@@ -49,7 +47,6 @@ export default function Dashboard() {
             const response = await fetch('http://localhost/materclass-Unit/backend/api/cancel/cancel');
             const dataCancel = await response.json();
             setEvents(dataCancel.Cancels);
-            console.log(dataCancel.Cancels)
         } catch (error) {
             console.error('Erreur lors de la récupération des événements annulés:', error);
         }
@@ -73,12 +70,14 @@ export default function Dashboard() {
                 body: formDataCancel,
             });
             const data = await response.json();
+            setErrorMessage(data.status + ' Evénement annulé avec succès')
 
-            setEvents(events.map((event) => (event.IdEvent === data.IdEvent ? data : event)));
+            await fetchEvents();
+            await fetchCancelledEvents();
 
             setCancelledEvent(null);
             setCancellationReason('');
-            setErrorMessage('Evénement annulé avec succès')
+
         } catch (error) {
             setErrorMessage('Erreur lors de l\'annulation de l\'événement');
         }
@@ -90,6 +89,7 @@ export default function Dashboard() {
                 <h2 data-testid="dashboardID"  className='dashboard-title'>Dashboard</h2>
                 <AddEventForm onEventAdded={fetchEvents} dataCate={dataCate}/>
                 <section className="cards">
+                    {<p></p>}
                     {cancelledEvent && (
                         <div className='cancelledEvent'>
                             <h3>Annuler l'événement "{cancelledEvent.EventDescription}"</h3>
@@ -107,7 +107,7 @@ export default function Dashboard() {
                     <h3 data-testid="events">Événements</h3>
                     <ul className="card-container">
                     {dataList.map((event) => {
-                        const category = dataCate.find(cate => cate.IdEvent === event.EventCategoryId);
+                        const category = dataCate.find(cate => cate.idCategory === event.EventCategoryId);
                         const cancelledEvent = events.find(cancel => cancel.cancel_event_id === event.IdEvent);
                         return (
                             <li key={event.IdEvent} className='card'>
@@ -118,7 +118,7 @@ export default function Dashboard() {
                                 <p>Début : {new Date(event.EventStart).toLocaleString()}</p>
                                 <p>Fin : {new Date(event.EventEnd).toLocaleString()}</p>
                                 {cancelledEvent ? (
-                                    <p style={{ color: 'red' }}>Raison de l'annulation : {cancelledEvent.cancel_reason}</p>
+                                    <p>Evenement Annulée : {cancelledEvent.cancel_reason}</p>
                                 ) : (
                                     <button onClick={() => handleCancelEvent(event)}>
                                         Annuler

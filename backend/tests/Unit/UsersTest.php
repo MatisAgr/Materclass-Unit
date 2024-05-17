@@ -26,7 +26,7 @@ class UsersTest extends TestCase
     {
         $this->users->createUser($this->user_username, $this->user_real_mail, $this->user_passwd, $this->user_real_birth, $this->user_role);
 
-        $stmt = $this->db->query("SELECT * FROM users WHERE user_mail = '$this->user_real_mail'")->fetch();
+        $stmt = $this->users->getUserByEmail($this->user_real_mail);
         $this->assertEquals($this->user_username, $stmt['user_username']);
     }
     

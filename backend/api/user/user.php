@@ -11,7 +11,7 @@ use Masterticket\Invoices;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if(isset($_GET['idUser'])){
-        $idUser = $_GET['idUser'];
+        $idUser = intval($_GET['idUser']);
         $users = new Users();
         $userData = $users->getUserId($idUser);
 

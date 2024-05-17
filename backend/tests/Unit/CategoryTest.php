@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 class CategoryTest extends TestCase {
     private $db;
     private $category;
+    private $category_name = 'Test Category';
 
     protected function setUp(): void {
         $this->db = new Database();
@@ -14,23 +15,25 @@ class CategoryTest extends TestCase {
     }
 
     public function testCreateCategory() {
-        $this->category->createCategory('Test Category');
+        $this->category->createCategory($this->category_name);
 
-        $stmt = $this->category->getCategoryByName('Test Category');
+        $stmt = $this->category->getCategoryByName($this->category_name);
 
-        $this->assertEquals('Test Category', $stmt['category_name']);
+        $this->assertEquals($this->category_name, $stmt['category_name']);
     }
 
     public function testGetCategoryById() {
-        $stmt = $this->category->getCategoryById(1);
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $stmt = $this->category->getCategoryById($last_category_id);
 
-        $this->assertEquals('Test', $stmt['category_name']);
+        $this->assertEquals($this->category_name, $stmt['category_name']);
     }
 
     public function testGetCategoryByName() {
-        $stmt = $this->category->getCategoryByName('Test');
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $stmt = $this->category->getCategoryByName($this->category_name);
 
-        $this->assertEquals(1, $stmt['category_id']);
+        $this->assertEquals($last_category_id, $stmt['category_id']);
     }
 
     public function testGetAllCategory() {
@@ -45,6 +48,14 @@ class CategoryTest extends TestCase {
         $stmt = $this->category->getCategoryById(1);
 
         $this->assertEquals('Test', $stmt['category_name']);
+    }
+
+    public function testDeleteCategory() {
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $this->category->deleteCategory($last_category_id);
+
+        $stmt = $this->category->getCategoryById($last_category_id);
+        $this->assertEmpty($stmt);
     }
     
     protected function tearDown(): void {

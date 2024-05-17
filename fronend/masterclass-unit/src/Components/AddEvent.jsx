@@ -91,7 +91,7 @@ function AddEventForm({ onEventAdded, dataCate }) {
                     Choisissez une catégorie
                 </option>
                 {dataCate.map((category) => (
-                    <option key={category.IdEvent} value={category.IdEvent}>
+                    <option key={category.idCategory} value={category.idCategory}>
                     {category.CategoryName}
                 </option>
                 ))}

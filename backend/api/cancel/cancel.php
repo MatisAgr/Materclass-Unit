@@ -1,29 +1,30 @@
 <?php
-// get all cancelations
 header('Content-type:application/json');
 
 require_once '../../vendor/autoload.php';
 
-use Masterticket\Events;
+use Masterticket\Cancel;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $events = new Events();
-    $cancelationDatas = $events->getAllCancelations();
 
-    if($cancelationDatas){
+    $cancel = new Cancel();
+    $cancelData = $cancel->getAllCancels();
+    
+    if($cancelData){
         $jsonData = [
             'code' => 200,
             'status' => 'success',
-            'Cancelations' => $cancelationDatas
+            'Cancels' => $cancelData
         ];
     }else {
+        http_response_code(404);
         $jsonData = [
             'code' => 404,
             'status' => 'error',
-            'message' => 'No cancelations found.'
+            'message' => 'No cancelled events found'
         ];
     }
-}else {
+} else {
     http_response_code(405);
     $jsonData = [
         'code' => 405,
@@ -33,4 +34,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 echo json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-?>

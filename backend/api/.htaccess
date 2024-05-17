@@ -40,3 +40,6 @@ RewriteRule ^user/user$ user/user.php
 
 RewriteRule ^invoice/create$ invoice/create.php
 
+RewriteRule ^cancel/cancel$ cancel/cancel.php
+RewriteRule ^cancel/create$ cancel/create.php
+

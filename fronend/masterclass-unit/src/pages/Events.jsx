@@ -87,17 +87,15 @@ const EventList = () => {
     Promise.all([
         fetch('http://localhost/Materclass-Unit/backend/api/event/list').then(response => response.json()),
         fetch('http://localhost/Materclass-Unit/backend/api/category/list').then(response => response.json()),
-        fetch('http://localhost/Materclass-Unit/backend/api/event/createCancel').then(response => response.json())
+        fetch('http://localhost/Materclass-Unit/backend/api/cancel/cancel').then(response => response.json())
     ])
     .then(([eventData, categoryData, cancelationData]) => {
         setEvents(eventData.Events);
         setCategories(categoryData.Categories);
-        setCancellations(cancelationData.Cancelations);
+        setCancellations(cancelationData.Cancels);
     })
     .catch(error => console.error('Error fetching events and categories:', error));
 }, []);
-
-    console.log(cancellations)
     
     return (
         <>
@@ -108,7 +106,6 @@ const EventList = () => {
                         // Find the category object corresponding to the event's category ID
                         const category = categories.find(cat => cat.idCategory === event.EventCategoryId);
                         const cancellation = cancellations.find(cancel => cancel.cancel_event_id === event.IdEvent); // Check if event is canceled
-
                         return (
                             <li key={event.IdEvent} className='event-cards'>
                                 <h3 data-testid="event-desc">{event.EventDescription}</h3>

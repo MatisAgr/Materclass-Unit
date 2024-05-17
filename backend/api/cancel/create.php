@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once '../../vendor/autoload.php';
 
+use Masterticket\Cancel;
 use Masterticket\Events;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $eventId = $_POST['EventId'];
         $cancelReason = $_POST['CancelReason'];
 
+        $cancel = new Cancel();
         $events = new Events();
 
         if(!$events->getEventById($eventId)){
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $events->cancelEvent($eventId, $cancelReason);
+        $cancel->cancelEvent($eventId, $cancelReason);
 
         $jsonData = [
             'code' => 200,

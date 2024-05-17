@@ -12,7 +12,7 @@ export default function Header() {
                     {!userId && <li><Link to="/login">Login</Link></li>}
                     {!userId && <li><Link to="/register">Register</Link></li>}
                     {userId && <li><Link to="/profile">Profile</Link></li>}
-                    {userRole == 'admin' && <li><Link to="/dashboard">Dashboard</Link></li>}
+                    {userRole === 'admin' && <li><Link to="/dashboard">Dashboard</Link></li>}
                     {userId && <li><Link to="/logout">Logout</Link></li>}
                 </ul>
             </nav>

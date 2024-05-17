@@ -47,7 +47,7 @@ class Events {
         $query->bindValue(':col2', $event_start, PDO::PARAM_STR);
         $query->bindValue(':col3', $event_end, PDO::PARAM_STR);
         $query->bindValue(':col4', $event_slots, PDO::PARAM_STR);
-        $query->bindValue(':col5', $event_ageneed, PDO::PARAM_STR);
+        $query->bindValue(':col5', $event_ageneed, PDO::PARAM_INT);
         $query->bindValue(':col6', $event_category_id, PDO::PARAM_INT);
         $query->execute();
     }

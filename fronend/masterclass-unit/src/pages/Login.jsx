@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Form.css'
 import { useNavigate } from 'react-router-dom';
+import { validateEmail, validatePassword } from '../Components/SecurityCheck';
 
 export default function LoginPage() {
   const [userMail, setMail] = useState('');
@@ -17,10 +18,22 @@ export default function LoginPage() {
     } else {
       setDisabled(false);
     }
-  });
+  }, [userMail, userPassword]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Check Email
+    if (!validateEmail(userMail)) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    // Check Password
+    if (!validatePassword(userPassword)) {
+      setErrorMessage('Password must be at least 8 characters long and include at least one number, one lowercase letter, and one uppercase letter.');
+      return;
+    }
     try {
       const formData = new FormData();
         formData.append('userMail', userMail);
@@ -32,6 +45,7 @@ export default function LoginPage() {
       });
 
       const data = await response.json();
+      console.log(data)
       if (response.ok) {
         // Connexion réussie
         localStorage.setItem('userId', data.Session.Id);

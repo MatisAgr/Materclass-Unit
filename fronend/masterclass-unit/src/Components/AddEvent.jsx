@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 function AddEventForm({ onEventAdded, dataCate }) {
+    const today = new Date().toISOString().split("T")[0] + "T00:00";
     const [newEvent, setNewEvent] = useState({
         EventDescription: '',
         EventSlots: '',
@@ -55,57 +56,57 @@ function AddEventForm({ onEventAdded, dataCate }) {
         <div className='event-card'>
             <h3>Ajouter un événement</h3>
             <input
-                data-testid="eventDescription"
-                type="text"
-                minLength="2"
-                maxLength="200"
-                placeholder="Description de l'événement"
-                value={newEvent.EventDescription}
-                onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
-            />
-            <input
-                type="number"
-                placeholder="Nombre de places"
-                value={newEvent.EventSlots}
-                max="7000"
-                min="0"
-                onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
-            />
-            <input
-                data-testid="eventAge"
-                type="number"
-                min="0"
-                placeholder="Age requis"
-                value={newEvent.EventAgeneed}
-                onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
-            />
-            <input
-                type="datetime-local"
-                placeholder="Début de l'événement"
-                value={newEvent.EventStart}
-                onChange={(e) => setNewEvent({ ...newEvent, EventStart: e.target.value })}
-            />
-            <input
-                type="datetime-local"
-                placeholder="Fin de l'événement"
-                value={newEvent.EventEnd}
-                onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
-            />
-            <select
-                data-testid="eventCategory"
-                value={newEvent.CategoryId}
-                onChange={(e) => setNewEvent({ ...newEvent, CategoryId: e.target.value })}
-                >
-                <option value="" disabled>
-                    Choisissez une catégorie
-                </option>
-                {dataCate.map((category) => (
-                    <option key={category.idCategory} value={category.idCategory}>
-                    {category.CategoryName}
-                </option>
-                ))}
-                </select>
-            <button data-testid="submit-add"  onClick={handleAddEvent}>Ajouter</button>
+                        data-testid="eventDescription"
+                        type="text"
+                        placeholder="Description de l'événement"
+                        value={newEvent.EventDescription}
+                        onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
+                    />
+                    <input
+                        data-testid="eventSlots"
+                        type="number"
+                        placeholder="Nombre de places"
+                        value={newEvent.EventSlots}
+                        onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
+                    />
+                    <input
+                        data-testid="eventAge"
+                        type="text"
+                        placeholder="Age requis"
+                        value={newEvent.EventAgeneed}
+                        onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
+                    />
+                    <input
+                        data-testid="eventStart"
+                        type="datetime-local"
+                        placeholder="Début de l'événement"
+                        value={newEvent.EventStart}
+                        min={today}
+                        onChange={(e) => setNewEvent({ ...newEvent, EventStart: e.target.value })}
+                    />
+                    <input
+                        data-testid="eventEnd"
+                        type="datetime-local"
+                        placeholder="Fin de l'événement"
+                        value={newEvent.EventEnd}
+                        min={today}
+                        onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
+                    />
+                    <select
+                        data-testid="eventCategory"
+                        value={newEvent.CategoryId}
+                        onChange={(e) => setNewEvent({ ...newEvent, CategoryId: e.target.value })}
+                        >
+                        <option value="" disabled>
+                            Choisissez une catégorie
+                        </option>
+                        {dataCate.map((category) => (
+                            <option key={category.IdEvent} value={category.IdEvent}>
+                            {category.CategoryName}
+                            </option>
+                        ))}
+                        </select>
+                    <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
             <p data-testid="error-Message-Add">{MessageAdd}</p>
         </div>
     );

@@ -5,8 +5,6 @@ import AddEventForm from '../Components/AddEvent';
 
 export default function Dashboard() {
     const navigate = useNavigate();
-
-    const today = new Date().toISOString().split("T")[0] + "T00:00";
     const [errorMessage, setErrorMessage] = useState('');
     const [dataList, setDataList] = useState([]);
     const [dataCate, setDataCate] = useState([]);
@@ -91,72 +89,6 @@ export default function Dashboard() {
             <div className="dashboard">
                 <h2 data-testid="dashboardID"  className='dashboard-title'>Dashboard</h2>
                 <AddEventForm onEventAdded={fetchEvents} dataCate={dataCate}/>
-      
-                <div className='event-card'>
-                    <h3>Ajouter un événement</h3>
-                    <input
-                        data-testid="eventDescription"
-                        type="text"
-                        placeholder="Description de l'événement"
-                        value={newEvent.EventDescription}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
-                    />
-                    <input
-                        data-testid="eventSlots"
-                        type="number"
-                        placeholder="Nombre de places"
-                        value={newEvent.EventSlots}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
-                    />
-                    <input
-                        data-testid="eventAge"
-                        type="text"
-                        placeholder="Age requis"
-                        value={newEvent.EventAgeneed}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
-                    />
-                    <input
-                        data-testid="eventStart"
-                        type="datetime-local"
-                        placeholder="Début de l'événement"
-                        value={newEvent.EventStart}
-                        min={today}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventStart: e.target.value })}
-                    />
-                    <input
-                        data-testid="eventEnd"
-                        type="datetime-local"
-                        placeholder="Fin de l'événement"
-                        value={newEvent.EventEnd}
-                        min={today}
-                        onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
-                    />
-                    <select
-                        data-testid="eventCategory"
-                        value={newEvent.CategoryId}
-                        onChange={(e) => setNewEvent({ ...newEvent, CategoryId: e.target.value })}
-                        >
-                        <option value="" disabled>
-                            Choisissez une catégorie
-                        </option>
-                        {dataCate.map((category) => (
-                            <option key={category.IdEvent} value={category.IdEvent}>
-                            {category.CategoryName}
-                            </option>
-                        ))}
-                        </select>
-                    <button data-testid="submit-add" onClick={handleAddEvent}>Ajouter</button>
-                    <p data-testid="error-Message-Add">{MessageAdd}</p>
-                </div>
-                {/* <div className='event-card'>
-                        <h3>Ajouter une catégorie</h3>
-                        <input
-                            type="text"
-                            placeholder="Nom de la catégorie"
-                        />
-                        <button onClick={handleAddCategory}>Ajouter</button>
-                </div> */}
-
                 <section className="cards">
                     {<p></p>}
                     {cancelledEvent && (

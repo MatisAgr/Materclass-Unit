@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
@@ -21,6 +21,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/logout" element={<Logout/>} />
+        <Route path="*" element={<h1>404 - Page not found</h1>} />
       </Routes>
     <Footer />
     </>

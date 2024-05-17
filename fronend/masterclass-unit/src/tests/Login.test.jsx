@@ -47,12 +47,12 @@ describe('Login', () => {
     test('should enable submit button when username and password are entered', async () => {
         expect(submitButton).toBeDisabled();
 
-        fireEvent.change(emailInput, { target: { value: 'testuser' } });
-        fireEvent.change(passwordInput, { target: { value: 'testpass' } });
+        fireEvent.change(emailInput, { target: { value: 'testuser@hotmail.fr' } });
+        fireEvent.change(passwordInput, { target: { value: 'testpass1!' } });
 
         await waitFor(() => {
-            expect(emailInput.value).toBe('testuser');
-            expect(passwordInput.value).toBe('testpass');
+            expect(emailInput.value).toBe('testuser@hotmail.fr');
+            expect(passwordInput.value).toBe('testpass1!');
             expect(submitButton).not.toBeDisabled();
         });
 
@@ -66,10 +66,10 @@ describe('Login', () => {
         expect(emailInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
 
-        fireEvent.change(passwordInput, { target: { value: 'testpass' } });
+        fireEvent.change(passwordInput, { target: { value: 'testpass1!' } });
 
         await waitFor(() => {
-            expect(passwordInput.value).toBe('testpass');
+            expect(passwordInput.value).toBe('testpass1!');
             expect(submitButton).toBeDisabled();
         });
     });
@@ -78,10 +78,10 @@ describe('Login', () => {
         expect(passwordInput).toHaveValue('');
         expect(submitButton).toBeDisabled();
 
-        fireEvent.change(emailInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, { target: { value: 'testuser@hotmail.fr' } });
 
         await waitFor(() => {
-            expect(emailInput.value).toBe('testuser');
+            expect(emailInput.value).toBe('testuser@hotmail.fr');
             expect(submitButton).toBeDisabled();
         });
 

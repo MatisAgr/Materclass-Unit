@@ -20,7 +20,6 @@ La Billetterie du Havre est une application web conçue pour gérer la billetter
 ### Prérequis
 - PHP 7.4 ou plus
 - Composer
-- Node.js
 - MySQL/MariaDB
 
 ### Clonage du repository

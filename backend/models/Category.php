@@ -8,7 +8,7 @@ class Category {
     protected $db;
 
     private function validateCategoryId($category_id){
-        if(empty($category_id)){
+        if(empty($category_id) ||  $category_id <= 0){
             throw new \Exception('Invalid category id');
         }
     }

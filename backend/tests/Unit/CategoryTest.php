@@ -40,6 +40,7 @@ class CategoryTest extends TestCase {
         $this->expectExceptionMessage('Invalid category id');
 
         $this->category->getCategoryById(NULL);
+        $this->category->getCategoryById(0);
     }
 
     public function testGetCategoryByName() {

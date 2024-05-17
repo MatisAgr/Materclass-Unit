@@ -31,10 +31,25 @@ class InvoicesTest extends TestCase {
         $this->assertTrue($this->isValidUuid($stmt['invoice_id']));
     }
 
+    public function testCreateInvoiceWithInvalidDate() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid date');
+
+        $this->invoices->createInvoice($this->invoice_user_id, $this->invoice_event_id, $this->invoice_fake_date);
+    }
+
     public function testGetInvoiceById() {
         $last_invoice_id = $this->db->query("SELECT MAX(invoice_id) FROM invoices")->fetchColumn();
         $stmt = $this->invoices->getInvoiceById($last_invoice_id);
         $this->assertTrue($this->isValidUuid($stmt['invoice_id']));
+    }
+
+    public function testGetInvoiceByIdWithInvalidId() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid invoice ID');
+
+        $this->invoices->getInvoiceById('0');
+        $this->invoices->getInvoiceById('invalid_id');
     }
 
     public function testGetAllInvoices() {
@@ -52,6 +67,13 @@ class InvoicesTest extends TestCase {
         $this->invoices->deleteInvoice($last_invoice_id);
         $stmt = $this->invoices->getInvoiceById($last_invoice_id);
         $this->assertEmpty($stmt);
+    }
+
+    public function testDeleteInvoiceWithInvalidId() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid invoice ID');
+
+        $this->invoices->deleteInvoice('0');
     }
 
     protected function tearDown(): void {

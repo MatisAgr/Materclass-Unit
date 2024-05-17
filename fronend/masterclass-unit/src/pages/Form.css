@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: #f0f2f5;
     padding: 5rem;
+    min-height: 73vh;
   }
 
   .formContainer h1{

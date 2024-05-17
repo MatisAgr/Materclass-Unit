@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 class CategoryTest extends TestCase {
     private $db;
     private $category;
+    private $category_name = 'Test Category';
 
     protected function setUp(): void {
         $this->db = new Database();
@@ -14,23 +15,46 @@ class CategoryTest extends TestCase {
     }
 
     public function testCreateCategory() {
-        $this->category->createCategory('Test Category');
+        $this->category->createCategory($this->category_name);
+        $stmt = $this->category->getCategoryByName($this->category_name);
 
-        $stmt = $this->category->getCategoryByName('Test Category');
+        $this->assertEquals($this->category_name, $stmt['category_name']);
+    }
 
-        $this->assertEquals('Test Category', $stmt['category_name']);
+    public function testCreateCategoryWithEmptyName() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('All fields are required');
+
+        $this->category->createCategory(NULL);
     }
 
     public function testGetCategoryById() {
-        $stmt = $this->category->getCategoryById(1);
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $stmt = $this->category->getCategoryById($last_category_id);
 
-        $this->assertEquals('Test', $stmt['category_name']);
+        $this->assertEquals($this->category_name, $stmt['category_name']);
+    }
+
+    public function testGetCategoryByIdWithInvalidId() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid category id');
+
+        $this->category->getCategoryById(NULL);
+        $this->category->getCategoryById(0);
     }
 
     public function testGetCategoryByName() {
-        $stmt = $this->category->getCategoryByName('Test');
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $stmt = $this->category->getCategoryByName($this->category_name);
 
-        $this->assertEquals(1, $stmt['category_id']);
+        $this->assertEquals($last_category_id, $stmt['category_id']);
+    }
+
+    public function testGetCategoryByNameWithInvalidName() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('All fields are required');
+
+        $this->category->getCategoryByName(NULL);
     }
 
     public function testGetAllCategory() {
@@ -40,11 +64,41 @@ class CategoryTest extends TestCase {
     }
 
     public function testUpdateCategory() {
-        $this->category->updateCategory(1, 'Test');
-
-        $stmt = $this->category->getCategoryById(1);
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $this->category->updateCategory($last_category_id, 'Test');
+        $stmt = $this->category->getCategoryById($last_category_id);
 
         $this->assertEquals('Test', $stmt['category_name']);
+    }
+
+    public function testUpdateCategoryWithEmptyName() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('All fields are required');
+
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $this->category->updateCategory($last_category_id, NULL);
+    }
+
+    public function testUpdateCategoryWithInvalidId() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid category id');
+
+        $this->category->updateCategory(NULL, 'Test');
+    }
+
+    public function testDeleteCategory() {
+        $last_category_id = $this->db->query("SELECT MAX(category_id) FROM categories")->fetchColumn();
+        $this->category->deleteCategory($last_category_id);
+
+        $stmt = $this->category->getCategoryById($last_category_id);
+        $this->assertEmpty($stmt);
+    }
+
+    public function testDeleteCategoryWithInvalidId() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid category id');
+
+        $this->category->deleteCategory(NULL);
     }
     
     protected function tearDown(): void {

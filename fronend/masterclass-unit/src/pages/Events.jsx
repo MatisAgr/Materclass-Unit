@@ -73,7 +73,8 @@ const EventList = () => {
                   {events.map(event => {
                         // Find the category object corresponding to the event's category ID
                         const category = categories.find(cat => cat.IdCategory === event.category);
-                        
+                        // console.log(categories)
+                        // console.log(event.category)
                         return (
                             <li key={event.IdEvent} className='event-card'>
                                 <h3 data-testid="event-desc">{event.EventDescription}</h3>

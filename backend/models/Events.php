@@ -75,13 +75,4 @@ class Events {
         $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
         $query->execute();
     }
-
-
-    public function cancelEvent($event_id, $cancel_reason) {
-            $sql = "INSERT INTO `cancel` (`cancel_event_id`, `cancel_reason`) VALUES (:col1, :col2)";
-            $query = $this->db->prepare($sql);
-            $query->bindValue(':col1', $event_id, PDO::PARAM_INT);
-            $query->bindValue(':col2', $cancel_reason, PDO::PARAM_STR);
-            $query->execute();
-    }
 }

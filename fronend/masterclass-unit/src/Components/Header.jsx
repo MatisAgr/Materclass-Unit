@@ -1,9 +1,17 @@
+import { useEffect, useState } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
-    const userId = localStorage.getItem('userId');
-    const userRole = localStorage.getItem('userRole');
+    const [userId, setUserId] = useState(localStorage.getItem('userId'));
+    const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+    const location = useLocation();
+
+    useEffect(() => {
+        setUserId(localStorage.getItem('userId'));
+        setUserRole(localStorage.getItem('userRole'));
+    }, [location.pathname]);
+
     return (
         <header>
             <nav>

@@ -21,9 +21,3 @@ export const validateUsername = (username) => {
   export const validateMatchingPassword = (password, confirmPassword) => {
     return password === confirmPassword;
   };
-
-  // Check for the login if the password as dangerous characters
-  export const validatePasswordForLogin = (password) => {
-    const dangerousCharactersPattern = /<script[^>]*>/g;
-    return !dangerousCharactersPattern.test(password);
-  };

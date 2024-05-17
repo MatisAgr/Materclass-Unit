@@ -37,6 +37,13 @@ class Invoices {
         return $result = $query->fetchAll();
     }
 
+    public function deleteInvoice($invoice_id){
+        $sql = "DELETE FROM `invoices` WHERE `invoice_id` = :col1";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':col1', $invoice_id, PDO::PARAM_STR);
+        $query->execute();
+    } 
+
     public function getAllEventsForUser($user_id){
         $sql = "SELECT * FROM `invoices` WHERE `invoice_user_id` = $user_id";
         $query = $this->db->prepare($sql);

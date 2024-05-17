@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { validateUsername, validateEmail, validatePassword, validateMatchingPassword } from '../Components/SecurityCheck';
 import './Form.css';
 
 export default function RegisterPage() {
@@ -16,17 +17,38 @@ export default function RegisterPage() {
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    if (userUsername === '' || userMail === '' || userPassword === '' || confirmPassword === '' || userBirth === '') {
+     // Check that all fields are filled
+     if (userUsername === '' || userMail === '' || userPassword === '' || confirmPassword === '' || userBirth === '') {
       setErrorMessage('All fields are required.');
       return;
     }
 
-    if (userPassword !== confirmPassword) {
+    // Check Username
+    if (!validateUsername(userUsername)) {
+      setErrorMessage('Username can only contain letters, hyphens, and apostrophes.');
+      return;
+    }
+
+    // Check Password match
+    if (!validateMatchingPassword(userPassword, confirmPassword)) {
       setErrorMessage('Passwords do not match.');
       return;
     }
+
+    // Check Email
+    if (!validateEmail(userMail)) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    // Check Password strength
+    if (!validatePassword(userPassword)) {
+      setErrorMessage('Password must be at least 8 characters long and include at least one number, one lowercase letter, and one uppercase letter.');
+      return;
+    }
+
     try {
-      // Créer un nouvel objet Formulaire pour envoyer le bon format de données au Php
+      // Create a new Form object to send the correct data format to Php
       const formData = new FormData();
       formData.append('userUsername', userUsername);
       formData.append('userMail', userMail);
@@ -38,11 +60,11 @@ export default function RegisterPage() {
         body: formData
       });
 
-      // Récupérer les données de la réponse
+      // Retrieve the data from the response
       const data = await response.json();
 
       if (response.ok) {
-        // Enregistrement réussi, rediriger l'utilisateur vers la page de connexion
+        // Successful registration, redirect the user to the login page
         console.log('User registered:', data);
         Navigate('/login');
       } else {
@@ -60,7 +82,7 @@ export default function RegisterPage() {
     } else {
       setDisabled(false);
     }
-  });
+  }, [userUsername, userMail, userPassword, confirmPassword, userBirth]);
 
   return (
     <div className="formContainer">
@@ -79,12 +101,12 @@ export default function RegisterPage() {
 
         <label>
           Password:
-          <input data-testid="password-input" type="password" value={userPassword} onChange={e => setUserPassword(e.target.value)} />
+          <input data-testid="password-input" type="password" value={userPassword} pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" placeholder='Mot de passe fort requis' title='8 caractères dont 1 lettre, 1 chiffre, 1 caractères spécial' onChange={e => setUserPassword(e.target.value)} />
         </label>
 
         <label>
           Confirm Password:
-          <input data-testid="password-input-check" type="password" onChange={e => setConfirmPassword(e.target.value)} />
+          <input data-testid="password-input-check" type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" placeholder='Mot de passe fort requis' title='8 caractères dont 1 lettre, 1 chiffre, 1 caractères spécial' onChange={e => setConfirmPassword(e.target.value)} />
         </label>
 
         <label>

@@ -12,6 +12,10 @@ function AddEventForm({ onEventAdded, dataCate }) {
     const [MessageAdd, setMessageAdd] = useState('');
 
     const handleAddEvent = async () => {
+        if (!newEvent.EventDescription || !newEvent.EventStart || !newEvent.EventEnd || !newEvent.EventSlots || !newEvent.EventAgeneed || !newEvent.CategoryId) {
+            setMessageAdd('Tous les champs sont obligatoires');
+            return;
+        }
         try {
             // Créer un nouvel objet Formulaire pour envoyer le bon format de données au Php
             const formData = new FormData();
@@ -53,6 +57,8 @@ function AddEventForm({ onEventAdded, dataCate }) {
             <input
                 data-testid="eventDescription"
                 type="text"
+                minLength="2"
+                maxLength="200"
                 placeholder="Description de l'événement"
                 value={newEvent.EventDescription}
                 onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
@@ -61,11 +67,14 @@ function AddEventForm({ onEventAdded, dataCate }) {
                 type="number"
                 placeholder="Nombre de places"
                 value={newEvent.EventSlots}
+                max="7000"
+                min="0"
                 onChange={(e) => setNewEvent({ ...newEvent, EventSlots: e.target.value })}
             />
             <input
                 data-testid="eventAge"
-                type="text"
+                type="number"
+                min="0"
                 placeholder="Age requis"
                 value={newEvent.EventAgeneed}
                 onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}

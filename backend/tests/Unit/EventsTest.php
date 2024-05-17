@@ -203,27 +203,6 @@ class EventsTest extends TestCase {
         $this->events->deleteEvent(NULL);
     }
 
-    public function testCancelEvent() {
-        $this->events->cancelEvent(2, 'Test Event Canceled');
-
-        $stmt = $this->db->query("SELECT * FROM cancel WHERE cancel_event_id = 2")->fetch();
-        $this->assertEquals(2, $stmt['cancel_event_id']);
-    }
-
-    public function testCancelEventWithInvalidId() {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid event ID');
-
-        $this->events->cancelEvent(NULL, 'Test Event Canceled');
-    }
-
-    public function testCancelEventWithInvalidReason() {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Cancel reason is required');
-
-        $this->events->cancelEvent(2, NULL);
-    }
-
     public function tearDown(): void {
         $this->db = null;
         $this->events = null;

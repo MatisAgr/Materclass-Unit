@@ -51,7 +51,6 @@ function UserProfilePage() {
                         <tr>
                             <th>Événement</th>
                             <th>Date</th>
-                            <th>Slots</th>
                             <th>Invoice</th>
                         </tr>
                     </thead>
@@ -60,7 +59,6 @@ function UserProfilePage() {
                             <tr key={event.IdEvent}>
                                 <td>{event.EventDescription}</td>
                                 <td>{event.EventStart}</td>
-                                <td>{event.EventSlots}</td>
                                 <td><a href={event.Invoice} target="_blank" rel="noopener noreferrer">Voir Facture</a></td>
                             </tr>
                         ))}

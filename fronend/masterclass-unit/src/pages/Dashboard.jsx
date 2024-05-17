@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import AddEventForm from '../Components/AddEvent';
@@ -11,16 +11,6 @@ export default function Dashboard() {
     const [events, setEvents] = useState([]);
     const [cancelledEvent, setCancelledEvent] = useState(null);
     const [cancellationReason, setCancellationReason] = useState('');
-    
-    useEffect(() => {
-        const role = localStorage.getItem('userRole');
-        if (role !== 'admin') {
-            navigate('/login');
-        }
-        fetchEvents();
-        fetchCategories();
-        fetchCancelledEvents();
-    }, [navigate]);
 
     const fetchEvents = async () => {
         try {
@@ -42,7 +32,7 @@ export default function Dashboard() {
         }
     };
 
-    const fetchCancelledEvents = async () => {
+    const fetchCancelledEvents = useCallback(async () => {
         try {
             const response = await fetch('http://localhost/materclass-Unit/backend/api/cancel/cancel');
             const dataCancel = await response.json();
@@ -50,7 +40,8 @@ export default function Dashboard() {
         } catch (error) {
             console.error('Erreur lors de la récupération des événements annulés:', error);
         }
-    };
+        // console.log(events)
+    }, []);
 
     const handleCancelEvent = (event) => {
         setCancelledEvent(event);
@@ -82,6 +73,16 @@ export default function Dashboard() {
             setErrorMessage('Erreur lors de l\'annulation de l\'événement');
         }
     };
+
+    useEffect(() => {
+        const role = localStorage.getItem('userRole');
+        if (role !== 'admin') {
+            navigate('/login');
+        }
+        fetchEvents();
+        fetchCategories();
+        fetchCancelledEvents();
+    }, [navigate, fetchCancelledEvents]);
 
     return (
         <div>

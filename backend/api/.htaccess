@@ -25,6 +25,7 @@ RewriteRule ^event/event$ event/event.php
 RewriteRule ^event/create$ event/create.php
 RewriteRule ^event/update$ event/update.php
 RewriteRule ^event/cancel$ event/cancel.php
+RewriteRule ^event/createCancel$ event/createCancel.php
 
 RewriteRule ^category/list$ category/list.php
 RewriteRule ^category/category$ category/category.php
@@ -38,4 +39,7 @@ RewriteRule ^user/logout$ user/logout.php
 RewriteRule ^user/user$ user/user.php
 
 RewriteRule ^invoice/create$ invoice/create.php
+
+RewriteRule ^cancel/cancel$ cancel/cancel.php
+RewriteRule ^cancel/create$ cancel/create.php
 

@@ -51,7 +51,6 @@ function UserProfilePage() {
                         <tr>
                             <th>Événement</th>
                             <th>Date</th>
-                            <th>Slots</th>
                             <th>Invoice</th>
                         </tr>
                     </thead>

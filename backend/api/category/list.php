@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $categoryName = $categoryData['category_name'];
             
             $jsonData['Categories'][] = [
-                'IdEvent' => $idCategory,
+                'idCategory' => $idCategory,
                 'CategoryName' => $categoryName
             ];
         }

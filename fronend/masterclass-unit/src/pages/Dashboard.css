@@ -28,7 +28,7 @@
     font-size: 24px;
 }
 
-.event-card input{
+.event-card input, .event-card select{
     width: 100%;
     padding: 12px;
     margin-bottom: 16px;
@@ -36,6 +36,7 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
+
 
 .event-card button {
     background-color: #d42df2;
@@ -68,6 +69,10 @@
     padding: 0;
 }
 
+.cardcancelled {
+    background-color: #ccc;
+}
+
 .cards .card-container .card {
     list-style-type: none;
     padding: 25px;
@@ -92,4 +97,16 @@
 
 .cards button:hover {
     background-color: #38013d;
+}
+
+.cancelledEvent{
+    margin: 2rem auto 5rem auto;
+    max-width: 25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.cancelledEvent textarea{
+    resize: none;
+    height: 5rem;
 }

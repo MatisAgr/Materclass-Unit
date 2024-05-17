@@ -1,25 +1,26 @@
 ul{
     list-style-type: none;
+    display: flex;
+    gap : 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .event-list{
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.eventlist{
-    display: flex;
-    gap: 1rem;
-    max-width: 75vw;
-}
-.event-card{
-    background-color: rgb(215, 172, 255);
-    padding: 1rem;
-    max-width: 25rem;
-    border-radius: .5rem;
+    margin-top: 5rem;
+}   
+.event-cards{
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.event-card > button {
+.event-cards > button {
     width: 7rem;
     height: 2rem;
     border-radius: .5rem;
@@ -29,7 +30,7 @@ ul{
     transition: .5s;
 }
 
-.event-card > button:hover{
+.event-cards > button:hover{
     background-color: rgb(130, 50, 221);
 }
 

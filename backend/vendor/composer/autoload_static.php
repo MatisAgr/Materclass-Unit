@@ -46,6 +46,11 @@ class ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b
             'Dotenv\\' => 7,
             'Dompdf\\' => 7,
             'DeepCopy\\' => 9,
+            'DASPRiD\\Enum\\' => 13,
+        ),
+        'B' => 
+        array (
+            'BaconQrCode\\' => 12,
         ),
     );
 
@@ -105,6 +110,24 @@ class ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'I' => 
+        array (
+            'Imagick' => 
+            array (
+                0 => __DIR__ . '/..' . '/calcinai/php-imagick/src',
+            ),
         ),
     );
 
@@ -1287,6 +1310,7 @@ class ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitfbee484fbcb98ba45566f17e8eb69e9b::$classMap;
 
         }, null, ClassLoader::class);

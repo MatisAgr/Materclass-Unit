@@ -38,6 +38,12 @@ cd Materclass-Unit
 cd backend
 ```
 
+- Pour exécuter les tests backend de l'application, utilisez :
+
+```bash
+php ./vendor/bin/phpunit
+```
+
 - Modifiez le fichier `.env` pour mettre à jour les variables de connexion à votre base de données.
 
 ### Configuration et démarrage du Frontend 

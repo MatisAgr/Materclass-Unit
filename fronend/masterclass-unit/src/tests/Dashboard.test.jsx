@@ -1,43 +1,70 @@
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import Dashboard from '../pages/Dashboard';
 import { MemoryRouter } from 'react-router-dom';
+import Dashboard from '../pages/Dashboard';
 
 describe('Dashboard', () => {
-    let eventDescription, eventAge, errorMessageAdd, submitButton;
+    let eventDescription, eventSlots, eventAge, eventStart, eventEnd, eventCategory;
 
+    /****Prepare ****/
     beforeEach(() => {
-    render(
-        <MemoryRouter>
-        <Dashboard />
-        </MemoryRouter>
-    );
-
-    eventDescription = screen.getByTestId('eventDescription');
-    eventAge = screen.getByTestId('eventAge');
-    // eventCategory = screen.getByTestId('eventCategory');
-    errorMessageAdd = screen.getByTestId('error-Message-Add');
-    submitButton = screen.getByTestId('submit-add');
+        render(
+            <MemoryRouter>
+                <Dashboard />
+            </MemoryRouter>
+        );
+        eventDescription = screen.getByTestId('eventDescription');
+        eventSlots = screen.getByTestId('eventSlots');
+        eventAge = screen.getByTestId('eventAge');
+        eventStart = screen.getByTestId('eventStart');
+        eventEnd = screen.getByTestId('eventEnd');
+        eventCategory = screen.getByTestId('eventCategory');
     });
 
-    test('renders Dashboard page', () => {
-    expect(eventDescription).toBeInTheDocument();
-    expect(eventAge).toBeInTheDocument();
-    // expect(eventCategory).toBeInTheDocument();
+    /***************** Test for rendering of dashboard page *****************/
+    test('renders dashboard page', () => {
+        expect(eventDescription).toBeInTheDocument();
+        expect(eventSlots).toBeInTheDocument();
+        expect(eventAge).toBeInTheDocument();
+        expect(eventStart).toBeInTheDocument();
+        expect(eventEnd).toBeInTheDocument();
+        expect(eventCategory).toBeInTheDocument();
     });
 
-    /* test('should display error message when error on adding a new event', async () => {
-        expect(eventDescription).toHaveValue('');
-        // expect(eventCategory).toHaveValue('');
-        expect(eventAge).toHaveValue('');
-        expect(submitButton).toBeInTheDocument();
+    /***************** Test for initial state of dashboard fields *****************/
+    test('should render dashboard with initial state', () => {
+        expect(eventDescription).toHaveTextContent('');
+        expect(eventSlots).toHaveValue(null);
+        expect(eventAge).toHaveTextContent('');
+        expect(eventStart).toHaveTextContent('');
+        expect(eventEnd).toHaveTextContent('');
+        expect(eventCategory).toHaveTextContent('Choisissez une catégorie');
+    });
 
-        // Simuler le clic sur le bouton d'ajout d'un événement
-        fireEvent.click(submitButton);
+    /***************** Test for input field binding *****************/
+    test('should render dashboard with event details', async () => {
 
-        // Attendre que le message d'erreur soit affiché
+        fireEvent.change(eventDescription, { target: { value: 'eventDescriptionTest' } });
+        fireEvent.change(eventSlots, { target: { value: 200 } });
+        fireEvent.change(eventAge, { target: { value: 'eventAgeTest' } });
+        fireEvent.change(eventStart, { target: { value: '1950-01-01T00:00' } });
+        fireEvent.change(eventEnd, { target: { value: '1959-01-01T00:00' } });
+        fireEvent.change(eventCategory, { target: { value: '1' } });
+
         await waitFor(() => {
-            expect(errorMessageAdd).toHaveTextContent('Erreur lors de l\'ajout de l\'événement');
+            expect(eventDescription).toHaveValue('eventDescriptionTest');
+            expect(eventSlots).toHaveValue(200);
+            expect(eventAge).toHaveValue('eventAgeTest');
+            expect(eventStart).toHaveValue('1950-01-01T00:00');
+            expect(eventEnd).toHaveValue('1959-01-01T00:00');
+            expect(screen.getByTestId('eventCategory')).toHaveValue('1');
         });
-    }); */
+
+
+
+    });
+
+
+
+
+
 });

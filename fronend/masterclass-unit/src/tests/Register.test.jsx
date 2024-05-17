@@ -202,7 +202,7 @@ describe('Register', () => {
 
         await new Promise(resolve => setTimeout(resolve, 0));   
 
-        expect(fetch).toHaveBeenCalledWith('http://localhost/Materclass-Unit/backend/api/user/signin', expect.objectContaining({
+        expect(fetch).toHaveBeenCalledWith('http://localhost/Materclass-Unit/backend/api/user/create', expect.objectContaining({
             method: 'POST',
             body: expect.any(FormData) 
         }));
@@ -214,7 +214,5 @@ describe('Register', () => {
         expect(responseBody).toEqual({ message: 'User registered' });
     
     });
-
-    
 
 });

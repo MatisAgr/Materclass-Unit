@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const today = new Date().toISOString().split("T")[0] + "T00:00";
     // const [categories, setCategory] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [MessageAdd, setMessageAdd] = useState('');
@@ -160,6 +161,7 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventDescription: e.target.value })}
                     />
                     <input
+                        data-testid="eventSlots"
                         type="number"
                         placeholder="Nombre de places"
                         value={newEvent.EventSlots}
@@ -173,15 +175,19 @@ export default function Dashboard() {
                         onChange={(e) => setNewEvent({ ...newEvent, EventAgeneed: e.target.value })}
                     />
                     <input
+                        data-testid="eventStart"
                         type="datetime-local"
                         placeholder="Début de l'événement"
                         value={newEvent.EventStart}
+                        min={today}
                         onChange={(e) => setNewEvent({ ...newEvent, EventStart: e.target.value })}
                     />
                     <input
+                        data-testid="eventEnd"
                         type="datetime-local"
                         placeholder="Fin de l'événement"
                         value={newEvent.EventEnd}
+                        min={today}
                         onChange={(e) => setNewEvent({ ...newEvent, EventEnd: e.target.value })}
                     />
                     <select
